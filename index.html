@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0b0e" />
+  <title>Leib &amp; Seele | zzZINUZzz</title>
+  <style>
+    :root {
+      --bg-main: #0b0b0e;
+      --bg-card: #15151b;
+      --accent: #ff5500;
+      --text-main: #f0f0f5;
+      --text-muted: #9595a5;
+      --border: #22222b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      padding-bottom: 140px; /* Platz für den Player unten */
+    }
+
+    header {
+      padding: 1.5rem 1rem;
+      text-align: center;
+      background: linear-gradient(180deg, #181824 0%, var(--bg-main) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    header p {
+      color: var(--accent);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    nav.tab-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px;
+      position: sticky;
+      top: 0;
+      background: rgba(11, 11, 14, 0.95);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    main {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 1rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .play-btn {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 1.5rem;
+    }
+
+    .social-link {
+      flex: 1;
+      text-align: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      background: var(--bg-card);
+    }
+
+    /* Fester Audioplayer am unteren Bildschirmrand */
+    .player-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111116;
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+      z-index: 100;
+      height: 120px;
+    }
+
+    .player-dock iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Leib &amp; Seele</h1>
+    <p>Records &bull; zzZINUZzz</p>
+  </header>
+
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('sets', this)">Sets &amp; Mixes</button>
+    <button class="tab-btn" onclick="switchTab('selfmade', this)">Selfmade</button>
+    <button class="tab-btn" onclick="switchTab('about', this)">Links</button>
+  </nav>
+
+  <main>
+    <!-- TAB 1: SETS -->
+    <section id="sets" class="section active">
+      <h2>Sets &bull; zzZINUZzz</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div>
+            <h3>Live Mischkonsum</h3>
+            <p>Underground Zound &bull; Live Recording</p>
+          </div>
+          <button class="play-btn" onclick="loadTrack('https://soundcloud.com/zzinuzzz/zzinuzz-livemischkonsum')">
+            ▶ In Player abspielen
+          </button>
+        </div>
+        <div class="card">
+          <div>
+            <h3>SoundCloud Stream</h3>
+            <p>Mr. Sinus Profil-Stream</p>
+          </div>
+          <button class="play-btn" onclick="loadTrack('https://soundcloud.com/mr-sinus-260403470')">
+            ▶ In Player abspielen
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: SELFMADE PRODUCTIONS -->
+    <section id="selfmade" class="section">
+      <h2>Selfmade Productions</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div>
+            <h3>Eigene Produktionen &amp; Demos</h3>
+            <p>Tracks und Mitschnitte direkt auf SoundCloud.</p>
+          </div>
+          <a href="https://soundcloud.com/zzinuzzz" target="_blank" class="play-btn">
+            SoundCloud Profil öffnen ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: INFO & SOCIAL LINKS -->
+    <section id="about" class="section">
+      <h2>Kanäle &amp; Kontakt</h2>
+      <div class="social-links">
+        <a class="social-link" href="https://soundcloud.com/zzinuzzz" target="_blank">SoundCloud</a>
+        <a class="social-link" href="https://www.facebook.com/LeibundSeeleRec/" target="_blank">Facebook</a>
+        <a class="social-link" href="https://youtu.be/eO0nkPGsaBM" target="_blank">YouTube</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Player Leiste unten -->
+  <div class="player-dock">
+    <iframe
+      id="sc-player"
+      scrolling="no"
+      frameborder="no"
+      allow="autoplay"
+      src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/zzinuzzz/zzinuzz-livemischkonsum&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false">
+    </iframe>
+  </div>
+
+  <script>
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function loadTrack(trackUrl) {
+      const player = document.getElementById('sc-player');
+      player.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(trackUrl)}&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false`;
+    }
+  </script>
+</body>
+  </html>
+
