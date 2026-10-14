@@ -1,268 +1,716 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b0b0e" />
-  <title>Leib &amp; Seele | zzZINUZzz</title>
-  <style>
-    :root {
-      --bg-main: #0b0b0e;
-      --bg-card: #15151b;
-      --accent: #ff5500;
-      --text-main: #f0f0f5;
-      --text-muted: #9595a5;
-      --border: #22222b;
-    }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Leib &amp; Seele | zZinuZz – Dj'ing &amp; Producing, UndergroundSound, LiveStream</title>
+  <meta name="description" content="Leib &amp; Seele Records aus Koblenz: Dj'ing &amp; Producing, Underground Sound, Live-Sets von zZinuZz, Selfmade-Productions und der FL-Studio-21-Workshop „Fruityloop´s für FruityNoob´s“.">
+  <meta name="theme-color" content="#0a0908">
+  <meta name="color-scheme" content="dark">
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+  <!-- Social media preview (change the URLs if you use your own domain) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:site_name" content="Leib &amp; Seele Records">
+  <meta property="og:title" content="Leib &amp; Seele | zZinuZz – Underground Zound">
+  <meta property="og:description" content="Dj'ing &amp; Producing, Underground Sound, Live-Sets und Selfmade-Productions aus Koblenz – seit 2010.">
+  <meta property="og:url" content="https://leibuseele-nackedei4all.github.io/UndergroundZound/">
+  <meta property="og:image" content="https://leibuseele-nackedei4all.github.io/UndergroundZound/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
 
-    body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      padding-bottom: 140px; /* Platz für den Player unten */
-    }
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
 
-    header {
-      padding: 1.5rem 1rem;
-      text-align: center;
-      background: linear-gradient(180deg, #181824 0%, var(--bg-main) 100%);
-      border-bottom: 1px solid var(--border);
-    }
+  <link rel="preload" href="assets/fonts/lobster-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/raleway-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css">
 
-    header h1 {
-      font-size: 1.6rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #fff;
-    }
-
-    header p {
-      color: var(--accent);
-      font-size: 0.85rem;
-      letter-spacing: 1px;
-      margin-top: 4px;
-    }
-
-    nav.tab-bar {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px;
-      position: sticky;
-      top: 0;
-      background: rgba(11, 11, 14, 0.95);
-      backdrop-filter: blur(8px);
-      z-index: 10;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tab-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      font-weight: 500;
-    }
-
-    .tab-btn.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-
-    main {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-
-    .section {
-      display: none;
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    .card-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 1rem;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .card h3 {
-      font-size: 1.05rem;
-    }
-
-    .card p {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    .play-btn {
-      background: var(--accent);
-      color: #fff;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-    }
-
-    .social-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 1.5rem;
-    }
-
-    .social-link {
-      flex: 1;
-      text-align: center;
-      color: var(--text-muted);
-      text-decoration: none;
-      padding: 10px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.85rem;
-      background: var(--bg-card);
-    }
-
-    /* Fester Audioplayer am unteren Bildschirmrand */
-    .player-dock {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #111116;
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
-      z-index: 100;
-      height: 120px;
-    }
-
-    .player-dock iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Leib & Seele",
+    "alternateName": ["zZinuZz", "Leib & Seele Records"],
+    "url": "https://leibuseele-nackedei4all.github.io/UndergroundZound/",
+    "genre": ["Underground Sound", "Electronic", "Techno"],
+    "foundingDate": "2010",
+    "foundingLocation": { "@type": "Place", "name": "Koblenz, Deutschland" },
+    "email": "leibuseele@gmail.com",
+    "image": "https://leibuseele-nackedei4all.github.io/UndergroundZound/assets/img/og-image.jpg",
+    "sameAs": [
+      "https://soundcloud.com/mr-sinus-260403470",
+      "https://soundcloud.com/zzinuzzz",
+      "https://www.facebook.com/LeibundSeeleRec/",
+      "https://www.youtube.com/@zzinuzzleibundseele2948"
+    ]
+  }
+  </script>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
+  <!-- ============ Icons (inline SVG sprite) ============ -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 21.5v-7.6h2.6l.4-3.1h-3V8.9c0-.9.3-1.5 1.6-1.5h1.6V4.6c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.3H7.9v3.1h2.6v7.6h3z"/></symbol>
+    <symbol id="i-soundcloud" viewBox="0 0 24 24"><g fill="currentColor"><path d="M11.2 8.3v9.2h8.4a3.3 3.3 0 0 0 .4-6.6 5.1 5.1 0 0 0-8.8-2.6z"/><rect x="1" y="12.6" width="1.3" height="4.9" rx=".65"/><rect x="3.4" y="11.1" width="1.3" height="6.4" rx=".65"/><rect x="5.8" y="9.9" width="1.3" height="7.6" rx=".65"/><rect x="8.2" y="9.2" width="1.3" height="8.3" rx=".65"/></g></symbol>
+    <symbol id="i-youtube" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.8 15.1V8.9l5.7 3.1-5.7 3.1z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M3 5.5h18v13H3zM3.5 6l8.5 7 8.5-7"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.2v13.6a.8.8 0 0 0 1.2.7l10.6-6.8a.8.8 0 0 0 0-1.4L9.2 4.5A.8.8 0 0 0 8 5.2z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><g fill="currentColor"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></g></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-triangle" viewBox="0 0 100 88"><g fill="none" stroke="currentColor" stroke-linejoin="round"><path stroke-width="4" d="M50 4 96 84H4z"/><path stroke-width="2" d="M50 4v53M50 57 4 84M50 57l46 27"/></g><g fill="currentColor"><circle cx="38" cy="44" r="1"/><circle cx="60" cy="38" r=".8"/><circle cx="29" cy="68" r="1.1"/><circle cx="70" cy="66" r=".9"/><circle cx="52" cy="72" r=".7"/><circle cx="44" cy="30" r=".6"/><circle cx="64" cy="54" r=".7"/><circle cx="20" cy="78" r=".6"/><circle cx="80" cy="78" r=".8"/></g></symbol>
+  </svg>
 
-  <header>
-    <h1>Leib &amp; Seele</h1>
-    <p>Records &bull; zzZINUZzz</p>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <!-- ============ Header / Navigation ============ -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="#home" aria-label="Leib &amp; Seele – Startseite">
+        <svg class="brand__icon" aria-hidden="true"><use href="#i-triangle"/></svg>
+        <span class="brand__name script"><span class="ini">L</span>eib &amp; <span class="ini">S</span>eele</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <svg aria-hidden="true"><use href="#i-menu"/></svg><span class="visually-hidden">Menü</span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation">
+        <ul>
+          <li><a href="#home" data-nav="home">Leib &amp; Seele</a></li>
+          <li><a href="#sets" data-nav="sets">Underground Zound</a></li>
+          <li><a href="#selfmade" data-nav="selfmade">Selfmade</a></li>
+          <li><a href="#workshop" data-nav="workshop">FruityLoop´s für FruityNoob´s</a></li>
+          <li><a href="#about" data-nav="about">About</a></li>
+          <li><a href="#kontakt" data-nav="kontakt">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <nav class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('sets', this)">Sets &amp; Mixes</button>
-    <button class="tab-btn" onclick="switchTab('selfmade', this)">Selfmade</button>
-    <button class="tab-btn" onclick="switchTab('about', this)">Links</button>
-  </nav>
+  <main id="main" tabindex="-1">
 
-  <main>
-    <!-- TAB 1: SETS -->
-    <section id="sets" class="section active">
-      <h2>Sets &bull; zzZINUZzz</h2>
-      <div class="card-grid">
-        <div class="card">
-          <div>
-            <h3>Live Mischkonsum</h3>
-            <p>Underground Zound &bull; Live Recording</p>
-          </div>
-          <button class="play-btn" onclick="loadTrack('https://soundcloud.com/zzinuzzz/zzinuzz-livemischkonsum')">
-            ▶ In Player abspielen
-          </button>
-        </div>
-        <div class="card">
-          <div>
-            <h3>SoundCloud Stream</h3>
-            <p>Mr. Sinus Profil-Stream</p>
-          </div>
-          <button class="play-btn" onclick="loadTrack('https://soundcloud.com/mr-sinus-260403470')">
-            ▶ In Player abspielen
-          </button>
+    <!-- =====================================================
+         HOME
+         ===================================================== -->
+    <section class="view" id="home" data-title="Leib &amp; Seele | zZinuZz – Dj'ing &amp; Producing, UndergroundSound, LiveStream" aria-labelledby="home-title">
+      <div class="hero">
+        <h1 id="home-title" class="hero__title">
+          <picture>
+            <source srcset="assets/img/logo-leibundseele-static.webp" media="(prefers-reduced-motion: reduce)">
+            <img class="hero__logo" src="assets/img/logo-leibundseele.webp" width="875" height="282" alt="Leib &amp; Seele" title="Nochmal abspielen" fetchpriority="high">
+          </picture>
+        </h1>
+        <p class="hero__tagline">Dj'ing &amp; Producing <span aria-hidden="true">·</span> UndergroundSound <span aria-hidden="true">·</span> LiveStream</p>
+        <p class="hero__sub">zZinuZz <span aria-hidden="true">·</span> Koblenz <span aria-hidden="true">·</span> seit 2010</p>
+
+        <ul class="social social--hero">
+          <li><a href="https://web.facebook.com/peter.wendeler" target="_blank" rel="noopener" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a></li>
+          <li><a href="https://soundcloud.com/mr-sinus-260403470" target="_blank" rel="noopener" aria-label="SoundCloud"><svg aria-hidden="true"><use href="#i-soundcloud"/></svg></a></li>
+          <li><a href="https://www.youtube.com/watch?v=J3uEU75WEL8" target="_blank" rel="noopener" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-youtube"/></svg></a></li>
+        </ul>
+
+        <div class="hero__actions">
+          <a class="btn btn--gold" href="#sets"><svg aria-hidden="true"><use href="#i-play"/></svg> Updated Set's</a>
+          <a class="btn btn--ghost" href="#selfmade">More SelfmadeStuff</a>
         </div>
       </div>
-    </section>
 
-    <!-- TAB 2: SELFMADE PRODUCTIONS -->
-    <section id="selfmade" class="section">
-      <h2>Selfmade Productions</h2>
-      <div class="card-grid">
-        <div class="card">
-          <div>
-            <h3>Eigene Produktionen &amp; Demos</h3>
-            <p>Tracks und Mitschnitte direkt auf SoundCloud.</p>
-          </div>
-          <a href="https://soundcloud.com/zzinuzzz" target="_blank" class="play-btn">
-            SoundCloud Profil öffnen ↗
+      <a class="marquee" href="#sets" aria-label="Updated Set's – zzZINUZzz – Leib &amp; Seele">
+        <span class="marquee__track" aria-hidden="true">
+          <span>****** - Updated Set's - zzZINUZzz - Leib &amp; Seele - ******</span>
+          <span>****** - Updated Set's - zzZINUZzz - Leib &amp; Seele - ******</span>
+          <span>****** - Updated Set's - zzZINUZzz - Leib &amp; Seele - ******</span>
+          <span>****** - Updated Set's - zzZINUZzz - Leib &amp; Seele - ******</span>
+        </span>
+      </a>
+
+      <div class="container">
+        <div class="feature">
+          <article class="track track--feature" data-type="sc" data-src="https://api.soundcloud.com/tracks/2109299103" data-title="Lust&amp;Laune_Part1" data-artist="zzZINUZzz Live @ MischKonsum" data-cover="assets/img/covers/lustlaune.webp">
+            <img class="track__cover" src="assets/img/covers/lustlaune.webp" width="400" height="400" alt="Cover: Leib &amp; Seele presented" loading="lazy">
+            <div class="track__info">
+              <p class="eyebrow">Updated Set</p>
+              <h2 class="track__title">Lust&amp;Laune_Part1</h2>
+              <p class="track__artist">zzZINUZzz Live @ MischKonsum</p>
+              <p class="track__meta"><span class="tag tag--new">Neu</span><a class="ext" href="https://soundcloud.com/zzzinuzzz-mischkonsum/lustlaune_part1" target="_blank" rel="noopener">auf SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Lust&amp;Laune_Part1 abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <figure class="medallion">
+            <picture>
+              <source srcset="assets/img/medallion-static.webp" media="(prefers-reduced-motion: reduce)">
+              <img src="assets/img/medallion.webp" width="280" height="280" alt="Rotierendes zZinuZz-Medaillon" loading="lazy">
+            </picture>
+          </figure>
+        </div>
+
+        <h2 class="section-title script"><span class="ini">H</span>ighlights</h2>
+        <div class="track-grid">
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/1818083496" data-title="Tabularasa" data-artist="---=|zZinuZz|=--=|Leib&amp;Seele|=---" data-cover="">
+            <div class="track__cover track__cover--empty" aria-hidden="true"><svg><use href="#i-triangle"/></svg></div>
+            <div class="track__info">
+              <h3 class="track__title">Tabularasa</h3>
+              <p class="track__artist">---=|zZinuZz|=--=|Leib&amp;Seele|=---</p>
+              <p class="track__meta"><a class="ext" href="https://soundcloud.com/atrickinus-rod/tabularasa" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Tabularasa abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/528289503" data-title="Zzinuzz Live@mi(s)chKonsum" data-artist="&lt;-=]|zZinuZz|[=-&gt;" data-cover="assets/img/covers/livemischkonsum.webp">
+            <img class="track__cover" src="assets/img/covers/livemischkonsum.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">Zzinuzz Live@mi(s)chKonsum</h3>
+              <p class="track__artist">&lt;-=]|zZinuZz|[=-&gt;</p>
+              <p class="track__meta"><span class="tag">Live-Set</span><a class="ext" href="https://soundcloud.com/zzinuzzz/zzinuzz-livemischkonsum" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Zzinuzz Live@mi(s)chKonsum abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/users/268986139" data-title="++ Leib &amp; Seele ++ (alle Tracks)" data-artist="++ Leib &amp; Seele ++" data-cover="assets/img/covers/profile-leibseele.webp">
+            <img class="track__cover" src="assets/img/covers/profile-leibseele.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">++ Leib &amp; Seele ++</h3>
+              <p class="track__artist">Zzinuzz Live@MichKonsum · ActionJackson · Not macht erfinderisch · zZinuZz</p>
+              <p class="track__meta"><span class="tag">Playlist</span><a class="ext" href="https://soundcloud.com/mr-sinus-260403470" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Alle Tracks von ++ Leib &amp; Seele ++ abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+        </div>
+
+        <div class="teasers">
+          <a class="teaser" href="#sets">
+            <span class="teaser__title script"><span class="ini">U</span>nderground <span class="ini">Z</span>ound</span>
+            <span class="teaser__text">Live-Sets &amp; Mixe – die Updated Set's von zzZINUZzz.</span>
+          </a>
+          <a class="teaser" href="#selfmade">
+            <span class="teaser__title script"><span class="ini">S</span>elfmade-<span class="ini">P</span>roduction</span>
+            <span class="teaser__text">Eigene Produktionen, Demos &amp; Videos.</span>
+          </a>
+          <a class="teaser" href="#workshop">
+            <span class="teaser__title script"><span class="ini">F</span>ruityloop´s für <span class="ini">F</span>ruityNoob´s</span>
+            <span class="teaser__text">FL Studio 21 Workshop – Termin direkt online buchen.</span>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- TAB 3: INFO & SOCIAL LINKS -->
-    <section id="about" class="section">
-      <h2>Kanäle &amp; Kontakt</h2>
-      <div class="social-links">
-        <a class="social-link" href="https://soundcloud.com/zzinuzzz" target="_blank">SoundCloud</a>
-        <a class="social-link" href="https://www.facebook.com/LeibundSeeleRec/" target="_blank">Facebook</a>
-        <a class="social-link" href="https://youtu.be/eO0nkPGsaBM" target="_blank">YouTube</a>
+    <!-- =====================================================
+         UNDERGROUND ZOUND (Sets)  – was /tour on Wix
+         ===================================================== -->
+    <section class="view" id="sets" data-title="Underground Zound | Leib &amp; Seele" aria-labelledby="sets-title">
+      <div class="container">
+        <header class="page-head">
+          <h1 id="sets-title" class="page-title script"><span class="ini">U</span>nderground <span class="ini">zZz</span>ound</h1>
+          <svg class="page-head__icon" aria-hidden="true"><use href="#i-triangle"/></svg>
+          <p class="lead">Live-Sets, Mixe &amp; Mitschnitte – Underground Sound aus Koblenz. Klick auf <strong>▶</strong> und der Track läuft unten im Player weiter, während du stöberst.</p>
+        </header>
+
+        <div class="track-list">
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/2109299103" data-title="Lust&amp;Laune_Part1" data-artist="zzZINUZzz Live @ MischKonsum" data-cover="assets/img/covers/lustlaune.webp">
+            <img class="track__cover" src="assets/img/covers/lustlaune.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h2 class="track__title">Lust&amp;Laune_Part1</h2>
+              <p class="track__artist">zzZINUZzz Live @ MischKonsum</p>
+              <p class="track__meta"><span class="tag tag--new">Updated Set</span><a class="ext" href="https://soundcloud.com/zzzinuzzz-mischkonsum/lustlaune_part1" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Lust&amp;Laune_Part1 abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/1757944554" data-title="NU-Love-DT" data-artist="---=|zZinuZz|=--=|Leib&amp;Seele|=---" data-cover="assets/img/covers/nulove.webp">
+            <img class="track__cover" src="assets/img/covers/nulove.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h2 class="track__title">NU-Love-DT</h2>
+              <p class="track__artist">---=|zZinuZz|=--=|Leib&amp;Seele|=---</p>
+              <p class="track__meta"><a class="ext" href="https://soundcloud.com/atrickinus-rod/nu-love-dt" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="NU-Love-DT abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/1818083496" data-title="Tabularasa" data-artist="---=|zZinuZz|=--=|Leib&amp;Seele|=---" data-cover="">
+            <div class="track__cover track__cover--empty" aria-hidden="true"><svg><use href="#i-triangle"/></svg></div>
+            <div class="track__info">
+              <h2 class="track__title">Tabularasa</h2>
+              <p class="track__artist">---=|zZinuZz|=--=|Leib&amp;Seele|=---</p>
+              <p class="track__meta"><a class="ext" href="https://soundcloud.com/atrickinus-rod/tabularasa" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Tabularasa abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/528289503" data-title="Zzinuzz Live@mi(s)chKonsum" data-artist="&lt;-=]|zZinuZz|[=-&gt;" data-cover="assets/img/covers/livemischkonsum.webp">
+            <img class="track__cover" src="assets/img/covers/livemischkonsum.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h2 class="track__title">Zzinuzz Live@mi(s)chKonsum</h2>
+              <p class="track__artist">&lt;-=]|zZinuZz|[=-&gt;</p>
+              <p class="track__meta"><span class="tag">Live-Set</span><span class="tag">Elektro</span><a class="ext" href="https://soundcloud.com/zzinuzzz/zzinuzz-livemischkonsum" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Zzinuzz Live@mi(s)chKonsum abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/440629872" data-title="zzinuzzliveHomebase" data-artist="--zZINUZz--~--Leib&amp;Seele--" data-cover="assets/img/covers/homebase.webp">
+            <img class="track__cover" src="assets/img/covers/homebase.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h2 class="track__title">zzinuzzliveHomebase</h2>
+              <p class="track__artist">--zZINUZz--~--Leib&amp;Seele--</p>
+              <p class="track__meta"><span class="tag">Live-Set</span><span class="tag">Elektro</span><a class="ext" href="https://soundcloud.com/mr-sinus/zzinuzzlivehomebase" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="zzinuzzliveHomebase abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/452821443" data-title="zZinuZz" data-artist="++ Leib &amp; Seele ++" data-cover="">
+            <div class="track__cover track__cover--empty" aria-hidden="true"><svg><use href="#i-triangle"/></svg></div>
+            <div class="track__info">
+              <h2 class="track__title">zZinuZz</h2>
+              <p class="track__artist">++ Leib &amp; Seele ++</p>
+              <p class="track__meta"><a class="ext" href="https://soundcloud.com/mr-sinus-260403470/zzinuzz" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="zZinuZz abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+        </div>
+
+        <h2 class="section-title script"><span class="ini">A</span>lle <span class="ini">K</span>anäle</h2>
+        <ul class="channels">
+          <li><a href="https://soundcloud.com/mr-sinus-260403470" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-soundcloud"/></svg><span>++ Leib &amp; Seele ++</span></a></li>
+          <li><a href="https://soundcloud.com/zzinuzzz" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-soundcloud"/></svg><span>&lt;-=]|zZinuZz|[=-&gt;</span></a></li>
+          <li><a href="https://soundcloud.com/mr-sinus" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-soundcloud"/></svg><span>--zZINUZz--~--Leib&amp;Seele--</span></a></li>
+          <li><a href="https://soundcloud.com/atrickinus-rod" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-soundcloud"/></svg><span>---=|zZinuZz|=--=|Leib&amp;Seele|=---</span></a></li>
+          <li><a href="https://soundcloud.com/zzzinuzzz-mischkonsum" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-soundcloud"/></svg><span>zzZINUZzz Live @ MischKonsum</span></a></li>
+          <li><a href="https://soundcloud.com/pimmelberger-hodensack" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-soundcloud"/></svg><span>Leib&amp;Seele · zZinuZz</span></a></li>
+          <li><a href="https://www.youtube.com/@zzinuzzleibundseele2948" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-youtube"/></svg><span>zZinuZz Leib und Seele</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         SELFMADE-PRODUCTION  – was /media on Wix
+         ===================================================== -->
+    <section class="view" id="selfmade" data-title="Selfmade-Production | Leib &amp; Seele" aria-labelledby="selfmade-title">
+      <div class="container">
+        <header class="page-head">
+          <h1 id="selfmade-title" class="page-title script"><span class="ini">S</span>elfmade - <span class="ini">P</span>roduction</h1>
+          <svg class="page-head__icon" aria-hidden="true"><use href="#i-triangle"/></svg>
+          <p class="lead">Eigene Produktionen &amp; Demos. Die ersten drei Tracks liegen direkt hier auf der Seite – ganz ohne SoundCloud.</p>
+        </header>
+
+        <h2 class="section-title script"><span class="ini">E</span>xklusiv hier</h2>
+        <div class="track-list">
+          <article class="track" data-type="audio" data-src="assets/audio/hereiam-demo.mp3" data-title="HereIAm (Demo)" data-artist="zzZINUZzz" data-cover="assets/img/covers/hereiam.webp">
+            <img class="track__cover" src="assets/img/covers/hereiam.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">HereIAm (Demo)</h3>
+              <p class="track__artist">zzZINUZzz</p>
+              <p class="track__meta"><span class="tag">Demo</span><span class="tag">10:30</span></p>
+            </div>
+            <button class="track__play" type="button" aria-label="HereIAm (Demo) abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="audio" data-src="assets/audio/ready-player-one.mp3" data-title="Ready-Player-One" data-artist="zzZINUZzz" data-cover="assets/img/covers/ready-player-one.webp">
+            <img class="track__cover" src="assets/img/covers/ready-player-one.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">Ready-Player-One</h3>
+              <p class="track__artist">zzZINUZzz</p>
+              <p class="track__meta"><span class="tag">3:20</span></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Ready-Player-One abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="audio" data-src="assets/audio/hohenzollern.mp3" data-title="HohenZollern" data-artist="zzZINUZzz" data-cover="assets/img/covers/ready-player-one.webp">
+            <img class="track__cover" src="assets/img/covers/ready-player-one.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">HohenZollern</h3>
+              <p class="track__artist">zzZINUZzz</p>
+              <p class="track__meta"><span class="tag">2:00</span></p>
+            </div>
+            <button class="track__play" type="button" aria-label="HohenZollern abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+        </div>
+
+        <h2 class="section-title script"><span class="ini">A</span>uf <span class="ini">S</span>oundCloud</h2>
+        <div class="track-list">
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/453002241" data-title="ActionJackson" data-artist="++ Leib &amp; Seele ++" data-cover="assets/img/covers/actionjackson.webp">
+            <img class="track__cover" src="assets/img/covers/actionjackson.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">ActionJackson</h3>
+              <p class="track__artist">++ Leib &amp; Seele ++</p>
+              <p class="track__meta"><a class="ext" href="https://soundcloud.com/mr-sinus-260403470/actionjackson" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="ActionJackson abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/452997027" data-title="Not macht erfinderisch" data-artist="++ Leib &amp; Seele ++" data-cover="assets/img/covers/notmacht.webp">
+            <img class="track__cover" src="assets/img/covers/notmacht.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">Not macht erfinderisch</h3>
+              <p class="track__artist">++ Leib &amp; Seele ++</p>
+              <p class="track__meta"><span class="tag">Underground Sound</span><a class="ext" href="https://soundcloud.com/mr-sinus-260403470/not-macht-erfinderisch" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Not macht erfinderisch abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/182366702" data-title="Klosterbreu" data-artist="--zZINUZz--~--Leib&amp;Seele--" data-cover="assets/img/covers/klosterbreu.webp">
+            <img class="track__cover" src="assets/img/covers/klosterbreu.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">Klosterbreu</h3>
+              <p class="track__artist">--zZINUZz--~--Leib&amp;Seele--</p>
+              <p class="track__meta"><a class="ext" href="https://soundcloud.com/mr-sinus/klosterbreu" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="Klosterbreu abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://api.soundcloud.com/tracks/303571359" data-title="zZinuZz Began*s" data-artist="--zZINUZz--~--Leib&amp;Seele--" data-cover="assets/img/covers/began.webp">
+            <img class="track__cover" src="assets/img/covers/began.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">zZinuZz Began*s</h3>
+              <p class="track__artist">--zZINUZz--~--Leib&amp;Seele--</p>
+              <p class="track__meta"><a class="ext" href="https://soundcloud.com/mr-sinus/zzinuzz" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="zZinuZz Began*s abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+
+          <article class="track" data-type="sc" data-src="https://soundcloud.com/pimmelberger-hodensack/jetzt-erst-recht" data-title="jetzt erst recht" data-artist="Leib&amp;Seele" data-cover="assets/img/covers/jetzterstrecht.webp">
+            <img class="track__cover" src="assets/img/covers/jetzterstrecht.webp" width="400" height="400" alt="" loading="lazy">
+            <div class="track__info">
+              <h3 class="track__title">jetzt erst recht</h3>
+              <p class="track__artist">Leib&amp;Seele</p>
+              <p class="track__meta"><span class="tag">Downtempo</span><a class="ext" href="https://soundcloud.com/pimmelberger-hodensack/jetzt-erst-recht" target="_blank" rel="noopener">SoundCloud <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
+            </div>
+            <button class="track__play" type="button" aria-label="jetzt erst recht abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          </article>
+        </div>
+
+        <h2 class="section-title script"><span class="ini">V</span>ideo</h2>
+        <div class="video-card">
+          <div class="embed embed--video" data-embed="https://www.youtube-nocookie.com/embed/J3uEU75WEL8?autoplay=1&amp;rel=0" data-embed-title="AWO – Another Wrong Order (YouTube)">
+            <img src="assets/img/yt-awo.webp" width="480" height="270" alt="" loading="lazy">
+            <button class="embed__load" type="button">
+              <svg aria-hidden="true"><use href="#i-play"/></svg>
+              <span>Video laden</span>
+            </button>
+            <p class="embed__note">Beim Abspielen wird Inhalt von YouTube geladen.</p>
+          </div>
+          <div class="video-card__info">
+            <h3 class="script">AWO</h3>
+            <p>++Another Wrong Order++</p>
+            <p class="muted">zZinuZz Leib und Seele · 2014 · 6:27</p>
+            <a class="ext" href="https://www.youtube.com/watch?v=J3uEU75WEL8" target="_blank" rel="noopener">auf YouTube öffnen <svg aria-hidden="true"><use href="#i-ext"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         WORKSHOP  – was /kopie-von-livestream + /plans-pricing on Wix
+         ===================================================== -->
+    <section class="view" id="workshop" data-title="FruityLoop´s für FruityNoob´s – FL Studio 21 Workshop | Leib &amp; Seele" aria-labelledby="workshop-title">
+      <div class="container container--narrow">
+        <header class="page-head">
+          <h1 id="workshop-title" class="fl-heading">
+            <span class="visually-hidden">FL Studio 21 Workshop</span>
+            <span class="fl-title" aria-hidden="true">
+              <span>-FlStudio-</span>
+              <span class="fl-title__num">-----21-----</span>
+              <span>Workshop</span>
+            </span>
+          </h1>
+          <svg class="page-head__icon" aria-hidden="true"><use href="#i-triangle"/></svg>
+          <p class="page-title page-title--sub script"><span class="ini">F</span>ruityloop´s für <span class="ini">F</span>ruityNoob´s</p>
+        </header>
+
+        <div class="prose">
+          <h2>FlStudio´s 21</h2>
+
+          <h3>1. Einführung</h3>
+          <p>Zuerst wird das Programm in seine wesentlichen Bestandteile zerlegt.</p>
+
+          <div class="ws-step">
+            <div class="ws-step__text">
+              <h4>Playlist</h4>
+              <p>Hier wird der Trackverlauf aufgebaut. Mit den zuvor erstellten Pattern kann man hier wunderbar arrangieren. Auch Effekt-Automationen lassen sich mittels dieser Playlist einstellen.</p>
+            </div>
+            <a class="ws-step__img" href="assets/img/workshop/playlist.webp" target="_blank"><img src="assets/img/workshop/playlist.webp" width="1400" height="704" alt="FL Studio 21: Playlist" loading="lazy"></a>
+          </div>
+
+          <div class="ws-step">
+            <div class="ws-step__text">
+              <h4>Mixer-Masterbank</h4>
+              <p>Wird dir helfen, deine Elemente mit Effekten zu bearbeiten, und spielt beim Mastern des Soundtracks eine wichtige Rolle!</p>
+            </div>
+            <a class="ws-step__img" href="assets/img/workshop/mixer.webp" target="_blank"><img src="assets/img/workshop/mixer.webp" width="1400" height="601" alt="FL Studio 21: Mixer" loading="lazy"></a>
+          </div>
+
+          <div class="ws-step">
+            <div class="ws-step__text">
+              <h4>Pattern</h4>
+              <p>Hier haben wir die Möglichkeit, unsere Elemente zu arrangieren, und bearbeiten sie dann nach Belieben.</p>
+            </div>
+            <a class="ws-step__img ws-step__img--tall" href="assets/img/workshop/channel-rack.webp" target="_blank"><img src="assets/img/workshop/channel-rack.webp" width="618" height="673" alt="FL Studio 21: Channel Rack mit Pattern" loading="lazy"></a>
+          </div>
+
+          <div class="ws-step">
+            <div class="ws-step__text">
+              <h4>Pianoroll</h4>
+              <p>Hier kannst du nun Elemente mithilfe der Klaviertasten-Ansicht in Tonhöhe sowie Länge oder die Menge der Anschläge genauestens arrangieren.</p>
+            </div>
+            <a class="ws-step__img" href="assets/img/workshop/pianoroll.webp" target="_blank"><img src="assets/img/workshop/pianoroll.webp" width="1400" height="799" alt="FL Studio 21: Pianoroll" loading="lazy"></a>
+          </div>
+
+          <div class="ws-step ws-step--stack">
+            <div class="ws-step__text">
+              <h4>Channel-Control</h4>
+              <p>Hier wirst du die Eigenschaften deiner Elemente bestimmen.</p>
+            </div>
+            <div class="ws-gallery">
+              <a href="assets/img/workshop/channel-settings-1.webp" target="_blank"><img src="assets/img/workshop/channel-settings-1.webp" width="708" height="578" alt="Channel-Einstellungen: Miscellaneous" loading="lazy"></a>
+              <a href="assets/img/workshop/channel-settings-2.webp" target="_blank"><img src="assets/img/workshop/channel-settings-2.webp" width="699" height="566" alt="Channel-Einstellungen: Sample" loading="lazy"></a>
+              <a href="assets/img/workshop/channel-settings-3.webp" target="_blank"><img src="assets/img/workshop/channel-settings-3.webp" width="702" height="574" alt="Channel-Einstellungen: Hüllkurve (ADSR)" loading="lazy"></a>
+            </div>
+          </div>
+
+          <h3>2. Basics (Basis)</h3>
+          <ol class="alpha">
+            <li>Hinzufügen, Bearbeiten von Samples, Synthesizern und Effekten.</li>
+            <li>Anschlagsdynamik der jeweiligen Elemente.</li>
+            <li>Channel-Ausgabe zur Master-Mixerbank.</li>
+            <li>Grundlagen der Frequenzweichen, -splittung.</li>
+          </ol>
+          <div class="adsr">
+            <p class="adsr__title">### A.D.S.R. ###</p>
+            <p><b>A</b>ttack / <b>D</b>ecay / <b>S</b>ustain / <b>R</b>elease</p>
+            <p class="muted">( Anschlag / Länge / Weite / Ausklang )</p>
+          </div>
+
+          <h3>3. Umgang mit MIDI-Controller, MIDI-Mapping</h3>
+          <h3>4. Mastering</h3>
+
+          <p class="callout">Wir geben Dir nicht nur Einblicke in die Software, sondern auch wertvolle Tipps und Tricks zum Produzieren deiner Mukke!!!</p>
+        </div>
+
+        <div class="booking">
+          <h2 class="section-title script"><span class="ini">T</span>ermin buchen</h2>
+          <p class="lead">Wähl Dir ganz einfach im Kalender Zeit und Datum, an dem es für dich am besten passt, aus und nimm an unserem Workshop teil!</p>
+          <div class="embed embed--calendar" data-embed="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3wMrfe1UHMO250OTHguAUdqsGi33v2X4deIypbfrL-JugDxFYRm7NkdveOdmkLXuT3IrKc5wkm?gv=true" data-embed-title="Master-Your-Sound – Terminbuchung (Google Kalender)">
+            <button class="embed__load" type="button">
+              <svg aria-hidden="true"><use href="#i-calendar"/></svg>
+              <span>Kalender laden</span>
+            </button>
+            <p class="embed__note">Beim Laden wird der Buchungskalender von Google angezeigt.</p>
+          </div>
+          <p class="center"><a class="btn btn--ghost" href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3wMrfe1UHMO250OTHguAUdqsGi33v2X4deIypbfrL-JugDxFYRm7NkdveOdmkLXuT3IrKc5wkm" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-calendar"/></svg> Termin im Google Kalender öffnen</a></p>
+        </div>
+
+        <h2 class="section-title script"><span class="ini">S</span>tudio-<span class="ini">P</span>akete</h2>
+        <div class="plans">
+          <article class="plan">
+            <h3 class="plan__name script">Master Studio</h3>
+            <p class="plan__price"><span>50 €</span> / Monat</p>
+            <ul>
+              <li>Mastering your Soundtracks</li>
+              <li>Gültig für 2 Monate</li>
+            </ul>
+            <a class="btn btn--gold" href="mailto:leibuseele@gmail.com?subject=Anfrage%20Master%20Studio">Anfragen</a>
+          </article>
+          <article class="plan plan--gold">
+            <h3 class="plan__name script">Gold</h3>
+            <p class="plan__price"><span>50 €</span> / Monat</p>
+            <ul>
+              <li>MasterStudio</li>
+              <li>5 Stunden, à zwei pro Session</li>
+              <li>Gültig für 2 Monate</li>
+            </ul>
+            <a class="btn btn--gold" href="mailto:leibuseele@gmail.com?subject=Anfrage%20Gold%20Paket">Anfragen</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         ABOUT US  – was /epk on Wix
+         ===================================================== -->
+    <section class="view" id="about" data-title="About Us | Leib &amp; Seele" aria-labelledby="about-title">
+      <div class="container">
+        <header class="page-head">
+          <h1 id="about-title" class="page-title script"><span class="ini">A</span>bout <span class="ini">U</span>s</h1>
+          <svg class="page-head__icon" aria-hidden="true"><use href="#i-triangle"/></svg>
+        </header>
+
+        <div class="about">
+          <figure class="about__photo">
+            <img src="assets/img/artist-zzinuzz.webp" width="448" height="598" alt="zZinuZz mit Maske" loading="lazy">
+          </figure>
+          <div class="about__text">
+            <h2 class="about__name script">zZ<span class="ini">inu</span>Zz</h2>
+            <dl class="facts">
+              <div><dt class="script"><span class="ini">B</span>io</dt><dd><span class="ini script">K</span>oblenz | <span class="ini script">D</span>e</dd></div>
+              <div><dt class="script"><span class="ini">G</span>enres</dt><dd><span class="ini script">U</span>nderground<span class="ini script">Z</span>ound</dd></div>
+              <div><dt class="script"><span class="ini">S</span>ince</dt><dd><span class="ini script">2</span>010</dd></div>
+              <div><dt class="script"><span class="ini">L</span>abel</dt><dd><span class="ini script">L</span>eib&amp;<span class="ini script">S</span>eele</dd></div>
+            </dl>
+
+            <article class="track" data-type="audio" data-src="assets/audio/plusplus1-stormy.mp3" data-title="++1++" data-artist="---=|zZinuZz|=---" data-cover="assets/img/covers/plusplus1.webp">
+              <img class="track__cover" src="assets/img/covers/plusplus1.webp" width="400" height="400" alt="" loading="lazy">
+              <div class="track__info">
+                <h3 class="track__title">++1++</h3>
+                <p class="track__artist">---=|zZinuZz|=---</p>
+                <p class="track__meta"><span class="tag">Stormy</span><span class="tag">4:00</span></p>
+              </div>
+              <button class="track__play" type="button" aria-label="++1++ abspielen"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+            </article>
+          </div>
+        </div>
+
+        <figure class="emblem">
+          <img src="assets/img/emblem.webp" width="1107" height="574" alt="Leib &amp; Seele Emblem: Dreieck mit Flügeln" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         CONTACT  – was /contact (+ /file-share) on Wix
+         ===================================================== -->
+    <section class="view" id="kontakt" data-title="Contact | Leib &amp; Seele" aria-labelledby="kontakt-title">
+      <div class="container">
+        <header class="page-head">
+          <h1 id="kontakt-title" class="page-title script"><span class="ini">C</span>ontact</h1>
+          <svg class="page-head__icon" aria-hidden="true"><use href="#i-triangle"/></svg>
+        </header>
+
+        <div class="contact">
+          <form class="contact-form" id="contact-form" action="mailto:leibuseele@gmail.com" method="post" enctype="text/plain">
+            <div class="field">
+              <label for="cf-first">Vorname</label>
+              <input id="cf-first" name="Vorname" type="text" autocomplete="given-name" placeholder="z. B. Pimmelberger" required>
+            </div>
+            <div class="field">
+              <label for="cf-last">Nachname</label>
+              <input id="cf-last" name="Nachname" type="text" autocomplete="family-name" placeholder="z. B. Hodensack">
+            </div>
+            <div class="field">
+              <label for="cf-mail">E-Mail</label>
+              <input id="cf-mail" name="E-Mail" type="email" autocomplete="email" placeholder="z. B. beispiel@beispiel.com" required>
+            </div>
+            <div class="field">
+              <label for="cf-phone">Telefon</label>
+              <input id="cf-phone" name="Telefon" type="tel" autocomplete="tel" placeholder="z. B. +49 12 34 56 (optional)">
+            </div>
+            <div class="field field--full">
+              <label for="cf-msg" class="script label-big">Deine Nachricht an uns</label>
+              <textarea id="cf-msg" name="Nachricht" rows="7" placeholder="schreibe hier deine Nachricht ...." required></textarea>
+            </div>
+            <div class="field field--full form-actions">
+              <button class="btn btn--gold btn--big script" type="submit">Senden</button>
+              <p class="form-hint muted">„Senden“ öffnet dein E-Mail-Programm mit der fertigen Nachricht an <a href="mailto:leibuseele@gmail.com">leibuseele@gmail.com</a>.</p>
+            </div>
+          </form>
+
+          <aside class="contact-info">
+            <div class="contact-card">
+              <h2 class="script"><span class="ini">M</span>anagement</h2>
+              <p>Patrick Wendelmuth</p>
+              <p><a href="mailto:leibuseele@gmail.com"><svg aria-hidden="true"><use href="#i-mail"/></svg> leibuseele@gmail.com</a></p>
+            </div>
+            <div class="contact-card">
+              <h2 class="script"><span class="ini">B</span>ooking</h2>
+              <p>Leib &amp; Seele Rec.</p>
+              <p><a href="mailto:leibuseele@gmail.com?subject=Booking"><svg aria-hidden="true"><use href="#i-mail"/></svg> leibuseele@gmail.com</a></p>
+            </div>
+            <div class="contact-card">
+              <h2 class="script"><span class="ini">E</span>igenen <span class="ini">K</span>ram schicken</h2>
+              <p>Du hast eigene Tracks oder Sets? Schick uns einen Download-Link (z.&nbsp;B. WeTransfer, Dropbox oder Google Drive) per <a href="mailto:leibuseele@gmail.com?subject=Mein%20Track">E-Mail</a>.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         DISCLAIMER  – was /kopie-von-leib-seele on Wix
+         ===================================================== -->
+    <section class="view" id="disclaimer" data-title="Disclaimer | Leib &amp; Seele" aria-labelledby="disclaimer-title">
+      <div class="container container--narrow">
+        <header class="page-head">
+          <h1 id="disclaimer-title" class="page-title script"><span class="ini">D</span>isclaimer</h1>
+          <svg class="page-head__icon" aria-hidden="true"><use href="#i-triangle"/></svg>
+        </header>
+        <div class="prose legal">
+          <h2>Disclaimer – rechtliche Hinweise</h2>
+
+          <h3>1. Haftungsbeschränkung</h3>
+          <p>Die Inhalte des Internetauftritts wurden mit größtmöglicher Sorgfalt und nach bestem Gewissen erstellt. Dennoch übernimmt der Anbieter dieser Webseite keine Gewähr für die Aktualität, Vollständigkeit und Richtigkeit der bereitgestellten Seiten und Inhalte.</p>
+          <p>Als Diensteanbieter ist der Anbieter dieser Webseite gemäß § 7 Abs. 1 TMG für eigene Inhalte und bereitgestellte Informationen auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich; nach den §§ 8 bis 10 TMG jedoch nicht verpflichtet, die übermittelten oder gespeicherten fremden Informationen zu überwachen. Eine Entfernung oder Sperrung dieser Inhalte erfolgt umgehend ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung. Eine Haftung ist erst ab dem Zeitpunkt der Kenntniserlangung möglich.</p>
+
+          <h3>2. Externe Links</h3>
+          <p>Die Webseite enthält sog. „externe Links“ (Verlinkungen) zu anderen Webseiten, auf deren Inhalt der Anbieter der Webseite keinen Einfluss hat. Aus diesem Grund kann der Anbieter für diese Inhalte auch keine Gewähr übernehmen.</p>
+          <p>Für die Inhalte und Richtigkeit der bereitgestellten Informationen ist der jeweilige Anbieter der verlinkten Webseite verantwortlich. Zum Zeitpunkt der Verlinkung waren keine Rechtsverstöße erkennbar. Bei Bekanntwerden einer solchen Rechtsverletzung wird der Link umgehend entfernt.</p>
+
+          <h3>3. Urheberrecht/Leistungsschutzrecht</h3>
+          <p>Die auf dieser Webseite veröffentlichten Inhalte, Werke und bereitgestellten Informationen unterliegen dem deutschen Urheberrecht und Leistungsschutzrecht. Jede Art der Vervielfältigung, Bearbeitung, Verbreitung, Einspeicherung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedarf der vorherigen schriftlichen Zustimmung des jeweiligen Rechteinhabers. Das unerlaubte Kopieren/Speichern der bereitgestellten Informationen auf diesen Webseiten ist nicht gestattet und strafbar.</p>
+
+          <h3>4. Datenschutz</h3>
+          <p>Durch den Besuch des Internetauftritts können Informationen (Datum, Uhrzeit, aufgerufene Seite) über den Zugriff auf dem Server gespeichert werden. Es werden keine personenbezogenen (z. B. Name, Anschrift oder E-Mail-Adresse) Daten gespeichert.</p>
+          <p>Sofern personenbezogene Daten erhoben werden, erfolgt dies, sofern möglich, nur mit dem vorherigen Einverständnis des Nutzers der Webseite. Eine Weitergabe der Daten an Dritte findet ohne ausdrückliche Zustimmung des Nutzers nicht statt.</p>
+          <p>Der Anbieter weist darauf hin, dass die Übertragung von Daten im Internet (z. B. per E-Mail) Sicherheitslücken aufweisen und ein lückenloser Schutz der Daten vor dem Zugriff Dritter nicht gewährleistet werden kann. Der Anbieter übernimmt keine Haftung für die durch solche Sicherheitslücken entstandenen Schäden.</p>
+          <p>Der Verwendung der Kontaktdaten durch Dritte zur gewerblichen Nutzung wird ausdrücklich widersprochen. Es sei denn, der Anbieter hat zuvor seine schriftliche Einwilligung erteilt.</p>
+          <p>Der Anbieter behält sich rechtliche Schritte für den Fall der unverlangten Zusendung von Werbeinformationen, z. B. durch Spam-Mails, vor.</p>
+
+          <h3>5. Hosting &amp; eingebettete Inhalte</h3>
+          <p>Diese Webseite wird über GitHub Pages (GitHub, Inc.) bereitgestellt; beim Aufruf verarbeitet GitHub technisch notwendige Verbindungsdaten (z. B. die IP-Adresse). Schriften und Bilder liegen direkt auf dieser Seite, es werden keine Cookies gesetzt und keine Tracking-Dienste verwendet.</p>
+          <p>Player von SoundCloud, Videos von YouTube und der Buchungskalender von Google werden erst geladen, wenn du sie aktiv anklickst. Erst dann werden Daten an den jeweiligen Anbieter übertragen.</p>
+
+          <p class="muted small">Quelle: <a href="http://www.mustervorlage.net/disclaimer-muster/" target="_blank" rel="noopener">Muster Disclaimer</a></p>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- Player Leiste unten -->
-  <div class="player-dock">
-    <iframe
-      id="sc-player"
-      scrolling="no"
-      frameborder="no"
-      allow="autoplay"
-      src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/zzinuzzz/zzinuzz-livemischkonsum&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false">
-    </iframe>
+  <!-- ============ Footer ============ -->
+  <footer class="site-footer">
+    <svg class="site-footer__divider" aria-hidden="true"><use href="#i-triangle"/></svg>
+    <p class="site-footer__follow script">Follow us on:</p>
+    <ul class="social">
+      <li><a href="https://www.facebook.com/LeibundSeeleRec/" target="_blank" rel="noopener" aria-label="Facebook: Leib &amp; Seele Records"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a></li>
+      <li><a href="https://soundcloud.com/zzinuzzz" target="_blank" rel="noopener" aria-label="SoundCloud: zZinuZz"><svg aria-hidden="true"><use href="#i-soundcloud"/></svg></a></li>
+      <li><a href="https://www.youtube.com/@zzinuzzleibundseele2948" target="_blank" rel="noopener" aria-label="YouTube: zZinuZz Leib und Seele"><svg aria-hidden="true"><use href="#i-youtube"/></svg></a></li>
+    </ul>
+    <p class="site-footer__copy">© 2018 by Leib &amp; Seele Records</p>
+    <p class="site-footer__links">
+      <a href="#kontakt">Contact</a>
+      <span aria-hidden="true">·</span>
+      <a href="#disclaimer">Disclaimer</a>
+      <span aria-hidden="true">·</span>
+      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.de" target="_blank">CC BY 4.0</a>
+    </p>
+  </footer>
+
+  <!-- ============ Docked player (persists while you browse) ============ -->
+  <div class="dock" id="dock" aria-label="Player" role="region" hidden>
+    <div class="dock__inner">
+      <div class="dock__sc" id="dock-sc"></div>
+      <div class="dock__audio" id="dock-audio" hidden>
+        <img class="dock__cover" id="dock-cover" src="data:," alt="" width="56" height="56">
+        <button class="dock__toggle" id="dock-toggle" type="button" aria-label="Pause">
+          <svg class="icon-play" aria-hidden="true"><use href="#i-play"/></svg>
+          <svg class="icon-pause" aria-hidden="true"><use href="#i-pause"/></svg>
+        </button>
+        <div class="dock__body">
+          <p class="dock__meta"><strong id="dock-title"></strong> <span id="dock-artist"></span></p>
+          <div class="dock__progress">
+            <span id="dock-time">0:00</span>
+            <input id="dock-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position im Track">
+            <span id="dock-duration">0:00</span>
+          </div>
+        </div>
+      </div>
+      <button class="dock__close" id="dock-close" type="button" aria-label="Player schließen"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <p class="visually-hidden" id="dock-status" aria-live="polite"></p>
+    <audio id="audio" preload="none"></audio>
   </div>
 
-  <script>
-    function switchTab(tabId, btn) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      
-      document.getElementById(tabId).classList.add('active');
-      btn.classList.add('active');
-    }
-
-    function loadTrack(trackUrl) {
-      const player = document.getElementById('sc-player');
-      player.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(trackUrl)}&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false`;
-    }
-  </script>
+  <script src="assets/js/main.js" defer></script>
 </body>
-  </html>
-
+</html>
