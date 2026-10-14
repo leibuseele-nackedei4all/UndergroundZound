@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seite nicht gefunden | Leib &amp; Seele</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0a0908">
+  <script>
+    // Old Wix addresses -> matching section of the new one-page site
+    (function () {
+      var map = {
+        'tour': 'sets', 'kopie-von-underground-zound': 'sets',
+        'media': 'selfmade', 'kopie-von-more-selfmade-productions': 'selfmade',
+        'kopie-von-livestream': 'workshop', 'plans-pricing': 'workshop',
+        'epk': 'about', 'contact': 'kontakt', 'file-share': 'kontakt',
+        'kopie-von-leib-seele': 'disclaimer'
+      };
+      var path = location.pathname;
+      var base = path.indexOf('/UndergroundZound/') === 0 ? '/UndergroundZound/' : '/';
+      var slug = path.slice(base.length).replace(/\/+$/, '').split('/').pop();
+      window.__home = base;
+      if (map[slug]) location.replace(base + '#' + map[slug]);
+    })();
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      background: radial-gradient(ellipse at 50% 20%, #2a2418 0%, #0a0908 65%);
+      color: #f1e8d2; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding: 1.5rem;
+    }
+    svg { width: 90px; height: 80px; color: #f9ecc5; margin: 0 auto 1rem; display: block; }
+    h1 { font-family: "Brush Script MT", "Lobster", cursive; font-weight: 400; font-size: clamp(2.4rem, 8vw, 4rem); color: #edc858; margin: 0 0 .3rem; text-shadow: 0 3px 0 #4a3a13, 0 8px 14px rgba(0,0,0,.7); }
+    h1 span { color: #e0453f; }
+    p { color: #a99f88; margin: 0 0 1.6rem; }
+    a { display: inline-block; padding: .75rem 1.4rem; border-radius: 999px; font-weight: 700; text-decoration: none; color: #1d1505; background: linear-gradient(180deg, #fbe7a1, #e6c35a 45%, #b48e36); border: 1px solid #8a6f2a; }
+  </style>
+</head>
+<body>
+  <main>
+    <svg viewBox="0 0 100 88" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linejoin="round"><path stroke-width="4" d="M50 4 96 84H4z"/><path stroke-width="2" d="M50 4v53M50 57 4 84M50 57l46 27"/></g></svg>
+    <h1><span>4</span>04 – <span>S</span>eite nicht gefunden</h1>
+    <p>Diese Seite gibt es (nicht mehr). Der Underground Zound läuft aber weiter …</p>
+    <a id="home-link" href="./">Zur Startseite</a>
+  </main>
+  <script>document.getElementById('home-link').href = window.__home || './';</script>
+</body>
+</html>
