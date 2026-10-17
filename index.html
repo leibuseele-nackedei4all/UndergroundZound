@@ -65,6 +65,13 @@
     <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></symbol>
     <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></symbol>
     <symbol id="i-triangle" viewBox="0 0 100 88"><g fill="none" stroke="currentColor" stroke-linejoin="round"><path stroke-width="4" d="M50 4 96 84H4z"/><path stroke-width="2" d="M50 4v53M50 57 4 84M50 57l46 27"/></g><g fill="currentColor"><circle cx="38" cy="44" r="1"/><circle cx="60" cy="38" r=".8"/><circle cx="29" cy="68" r="1.1"/><circle cx="70" cy="66" r=".9"/><circle cx="52" cy="72" r=".7"/><circle cx="44" cy="30" r=".6"/><circle cx="64" cy="54" r=".7"/><circle cx="20" cy="78" r=".6"/><circle cx="80" cy="78" r=".8"/></g></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20c.7-3.5 3.2-5.3 7.5-5.3s6.8 1.8 7.5 5.3"/></g></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><path d="M2.8 20c.5-3.1 2.6-4.7 6.2-4.7s5.7 1.6 6.2 4.7M16.2 5.2a3 3 0 0 1 0 5.7M17 15.6c2.4.6 3.8 2.1 4.2 4.4"/></g></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 4.5h16v12H9l-5 3v-15zM8 9h8M8 12.5h5"/></symbol>
+    <symbol id="i-feed" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5h14M5 10h14M5 15h9"/><circle cx="18" cy="17.5" r="2.5"/></g></symbol>
+    <symbol id="i-picture" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-4 3 2 3-4 5 5"/></g></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></g></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="m21 3-7.2 18-3.7-7.1L3 10.2 21 3zm0 0L10.1 13.9"/></symbol>
   </svg>
 
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -89,6 +96,11 @@
           <li><a href="#kontakt" data-nav="kontakt">Contact</a></li>
         </ul>
       </nav>
+      <a class="member-trigger" id="member-trigger" href="#club" aria-label="Zum Mitgliederbereich">
+        <span class="member-trigger__avatar" id="member-trigger-avatar" hidden></span>
+        <svg class="member-trigger__icon" id="member-trigger-icon" aria-hidden="true"><use href="#i-user"/></svg>
+        <span id="member-trigger-label">Einloggen</span>
+      </a>
     </div>
   </header>
 
@@ -651,8 +663,9 @@
           <p>Die auf dieser Webseite veröffentlichten Inhalte, Werke und bereitgestellten Informationen unterliegen dem deutschen Urheberrecht und Leistungsschutzrecht. Jede Art der Vervielfältigung, Bearbeitung, Verbreitung, Einspeicherung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedarf der vorherigen schriftlichen Zustimmung des jeweiligen Rechteinhabers. Das unerlaubte Kopieren/Speichern der bereitgestellten Informationen auf diesen Webseiten ist nicht gestattet und strafbar.</p>
 
           <h3>4. Datenschutz</h3>
-          <p>Durch den Besuch des Internetauftritts können Informationen (Datum, Uhrzeit, aufgerufene Seite) über den Zugriff auf dem Server gespeichert werden. Es werden keine personenbezogenen (z. B. Name, Anschrift oder E-Mail-Adresse) Daten gespeichert.</p>
-          <p>Sofern personenbezogene Daten erhoben werden, erfolgt dies, sofern möglich, nur mit dem vorherigen Einverständnis des Nutzers der Webseite. Eine Weitergabe der Daten an Dritte findet ohne ausdrückliche Zustimmung des Nutzers nicht statt.</p>
+          <p>Die folgenden Hinweise beschreiben den öffentlichen Teil der Website. Für den Mitgliederbereich werden nach seiner Einrichtung zusätzliche personenbezogene Daten verarbeitet; siehe Abschnitt 6. Bitte ergänze vor der Freischaltung eine vollständige, auf den tatsächlichen Betrieb zugeschnittene Datenschutzerklärung.</p>
+          <p>Beim Besuch des öffentlichen Internetauftritts können Informationen (Datum, Uhrzeit, aufgerufene Seite) über den Zugriff auf dem Server gespeichert werden. Über das öffentliche Musikangebot werden keine Namen, Anschriften oder E-Mail-Adressen abgefragt.</p>
+          <p>Die bisherigen Hinweise betreffen den öffentlichen Teil der Website. Wird der Mitgliederbereich aktiviert, können Kontodaten, Profile, Beiträge, Medien und Nachrichten über Supabase verarbeitet werden; bei einer Anmeldung über Google oder Facebook werden Daten außerdem an den gewählten Anbieter übermittelt. Diese Verarbeitung und die jeweiligen Empfänger müssen in der vollständigen Datenschutzerklärung vor dem Start konkret beschrieben werden.</p>
           <p>Der Anbieter weist darauf hin, dass die Übertragung von Daten im Internet (z. B. per E-Mail) Sicherheitslücken aufweisen und ein lückenloser Schutz der Daten vor dem Zugriff Dritter nicht gewährleistet werden kann. Der Anbieter übernimmt keine Haftung für die durch solche Sicherheitslücken entstandenen Schäden.</p>
           <p>Der Verwendung der Kontaktdaten durch Dritte zur gewerblichen Nutzung wird ausdrücklich widersprochen. Es sei denn, der Anbieter hat zuvor seine schriftliche Einwilligung erteilt.</p>
           <p>Der Anbieter behält sich rechtliche Schritte für den Fall der unverlangten Zusendung von Werbeinformationen, z. B. durch Spam-Mails, vor.</p>
@@ -661,8 +674,201 @@
           <p>Diese Webseite wird über GitHub Pages (GitHub, Inc.) bereitgestellt; beim Aufruf verarbeitet GitHub technisch notwendige Verbindungsdaten (z. B. die IP-Adresse). Schriften und Bilder liegen direkt auf dieser Seite, es werden keine Cookies gesetzt und keine Tracking-Dienste verwendet.</p>
           <p>Player von SoundCloud, Videos von YouTube und der Buchungskalender von Google werden erst geladen, wenn du sie aktiv anklickst. Erst dann werden Daten an den jeweiligen Anbieter übertragen.</p>
 
+          <h3>6. Mitgliederbereich (vor dem Start ergänzen)</h3>
+          <p>Der Mitgliederbereich ist ein zusätzlicher Dienst und benötigt nach seiner Einrichtung einen Supabase-Backenddienst für Konten, Profile, Beiträge, private Medien und Nachrichten. Welche Supabase-Region und Aufbewahrungsfristen gelten, muss der Betreiber vor dem Start hier konkret angeben. Anmeldungen über Google oder Facebook übermitteln Daten auch an den jeweils gewählten Anbieter.</p>
+          <p>Profil- und Beitragsinhalte können je nach Sichtbarkeit von angemeldeten Mitgliedern oder Freunden gesehen werden. Direktnachrichten sind nicht Ende-zu-Ende-verschlüsselt. Teile keine Passwörter, Adressen oder sonstigen sensiblen Informationen. Bitte ergänze vor einer öffentlichen Registrierung den Verantwortlichen, Rechtsgrundlagen, Betroffenenrechte, Empfänger, Löschfristen und den vollständigen Kontaktweg.</p>
+
           <p class="muted small">Quelle: <a href="http://www.mustervorlage.net/disclaimer-muster/" target="_blank" rel="noopener">Muster Disclaimer</a></p>
         </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         COMMUNITY / MEMBERS AREA
+         ===================================================== -->
+    <section class="view member-view" id="club" data-title="Mitgliederbereich | Leib &amp; Seele" aria-labelledby="club-title">
+      <div class="container member-container">
+        <header class="member-page-head">
+          <p class="eyebrow">Leib &amp; Seele Community</p>
+          <h1 id="club-title" class="page-title script"><span class="ini">M</span>itgliederbereich</h1>
+          <p class="lead">Dein Platz für neue Sounds, Gedanken und gute Verbindungen.</p>
+        </header>
+
+        <div class="member-notice member-notice--setup" id="member-setup-note" role="status" hidden>
+          <strong>Der Mitgliederbereich ist noch nicht verbunden.</strong>
+          <span>Zur Sicherheit werden hier keine Anmeldedaten angenommen. Richte zuerst das Supabase-Projekt ein und trage dessen öffentliche Projekt-URL und Publishable-Key in <code>assets/js/member-config.js</code> ein. Die Schritte stehen in der README.</span>
+        </div>
+        <div class="member-flash" id="member-global-status" role="status" aria-live="polite" hidden></div>
+
+        <div class="member-auth" id="member-auth-panel">
+          <aside class="member-auth__intro">
+            <span class="member-auth__stamp">L&amp;S<br>community</span>
+            <p class="eyebrow">Musik verbindet</p>
+            <h2 class="script">Dein Raum.<br>Dein Sound.</h2>
+            <p>Teile Tracks, Bilder, Videos und Sprachnotizen. Entdecke die Pitch-Seiten anderer Mitglieder und bleib direkt im Gespräch.</p>
+            <ul class="member-auth__features">
+              <li><svg aria-hidden="true"><use href="#i-feed"/></svg> Feed &amp; persönliche Pitch-Seite</li>
+              <li><svg aria-hidden="true"><use href="#i-users"/></svg> Freunde &amp; Anfragen</li>
+              <li><svg aria-hidden="true"><use href="#i-message"/></svg> Einfache Direktnachrichten</li>
+            </ul>
+          </aside>
+          <div class="member-auth__body">
+            <div class="member-auth__tabs" role="tablist" aria-label="Konto">
+              <button class="member-auth__tab is-active" type="button" role="tab" aria-selected="true" data-auth-mode="login">Einloggen</button>
+              <button class="member-auth__tab" type="button" role="tab" aria-selected="false" data-auth-mode="register">Konto erstellen</button>
+            </div>
+            <form class="member-form" id="member-login-form" novalidate>
+              <label class="member-field"><span>E-Mail-Adresse</span><input id="member-login-email" type="email" autocomplete="email" required placeholder="du@beispiel.de" disabled></label>
+              <label class="member-field"><span>Passwort</span><input id="member-login-password" type="password" autocomplete="current-password" required placeholder="Dein Passwort" disabled></label>
+              <div class="member-form__actions">
+                <button class="member-button member-button--gold" type="submit" disabled>Einloggen</button>
+                <button class="member-link-button" id="member-forgot-password" type="button" disabled>Passwort vergessen?</button>
+              </div>
+            </form>
+            <form class="member-form" id="member-register-form" novalidate hidden>
+              <label class="member-field"><span>Anzeigename</span><input id="member-register-name" type="text" autocomplete="name" maxlength="60" required placeholder="Wie sollen dich andere nennen?" disabled></label>
+              <label class="member-field"><span>Benutzername</span><span class="member-input-prefix"><span aria-hidden="true">@</span><input id="member-register-username" type="text" autocomplete="username" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}" required placeholder="deinname" disabled></span><small>3–24 Zeichen: Buchstaben, Zahlen oder Unterstrich.</small></label>
+              <label class="member-field"><span>E-Mail-Adresse</span><input id="member-register-email" type="email" autocomplete="email" required placeholder="du@beispiel.de" disabled></label>
+              <label class="member-field"><span>Passwort</span><input id="member-register-password" type="password" autocomplete="new-password" minlength="10" required placeholder="Mindestens 10 Zeichen" disabled></label>
+              <label class="member-check"><input id="member-register-consent" type="checkbox" required disabled><span>Ich akzeptiere die <a href="#club-rules">Community-Regeln</a> und habe die <a href="#disclaimer">Datenschutzhinweise</a> gelesen.</span></label>
+              <button class="member-button member-button--gold member-button--wide" type="submit" disabled>Kostenloses Konto erstellen</button>
+            </form>
+            <form class="member-form" id="member-password-update-form" novalidate hidden>
+              <p class="member-auth__recovery-copy">Setze ein neues Passwort für dein Konto. Verwende mindestens 10 Zeichen.</p>
+              <label class="member-field"><span>Neues Passwort</span><input id="member-new-password" type="password" autocomplete="new-password" minlength="10" required placeholder="Mindestens 10 Zeichen" disabled></label>
+              <label class="member-field"><span>Passwort wiederholen</span><input id="member-new-password-confirm" type="password" autocomplete="new-password" minlength="10" required placeholder="Passwort erneut eingeben" disabled></label>
+              <button class="member-button member-button--gold member-button--wide" type="submit" disabled>Neues Passwort speichern</button>
+              <button class="member-link-button" id="member-cancel-password-update" type="button" disabled>Abbrechen und abmelden</button>
+            </form>
+            <div class="member-auth__divider"><span>oder weiter mit</span></div>
+            <div class="member-social-login">
+              <button class="member-button member-button--social" type="button" data-oauth-provider="google" disabled><span class="member-google-mark" aria-hidden="true">G</span> Google</button>
+              <button class="member-button member-button--social" type="button" data-oauth-provider="facebook" disabled><svg class="member-facebook-mark" aria-hidden="true"><use href="#i-facebook"/></svg> Facebook</button>
+            </div>
+            <label class="member-check member-check--social"><input id="member-social-consent" type="checkbox" disabled><span>Ich akzeptiere die Community-Regeln und habe die <a href="#disclaimer">Datenschutzhinweise</a> gelesen.</span></label>
+            <details class="member-rules" id="club-rules">
+              <summary>Community-Regeln ansehen</summary>
+              <ul>
+                <li>Begegne anderen respektvoll. Belästigung, Hassrede und Drohungen sind nicht erlaubt.</li>
+                <li>Veröffentliche nur Inhalte, für die du die nötigen Rechte hast und die du teilen darfst.</li>
+                <li>Keine rechtswidrigen, pornografischen oder gewaltverherrlichenden Inhalte und keine persönlichen Daten anderer ohne deren Einwilligung.</li>
+                <li>Melde problematische Inhalte über „Melden“. Direktnachrichten sind nicht Ende-zu-Ende-verschlüsselt.</li>
+              </ul>
+            </details>
+            <p class="member-auth__hint">Mitglieder sehen Inhalte nur nach dem Einloggen. Teile trotzdem keine Passwörter, Adressen oder anderen sensiblen Daten.</p>
+          </div>
+        </div>
+
+        <div class="member-dashboard" id="member-dashboard" hidden>
+          <aside class="member-sidebar" aria-label="Mitglieder-Navigation">
+            <div class="member-sidebar__identity">
+              <span class="member-avatar member-avatar--large" id="member-sidebar-avatar" aria-hidden="true"></span>
+              <div><strong id="member-sidebar-name">Mitglied</strong><span id="member-sidebar-handle">@mitglied</span></div>
+            </div>
+            <nav class="member-sidebar__nav" aria-label="Community">
+              <button class="is-active" type="button" data-member-tab="feed"><svg aria-hidden="true"><use href="#i-feed"/></svg> Feed</button>
+              <button type="button" data-member-tab="pitch"><svg aria-hidden="true"><use href="#i-user"/></svg> Pitch-Seite</button>
+              <button type="button" data-member-tab="friends"><svg aria-hidden="true"><use href="#i-users"/></svg> Freunde <span class="member-nav-count" id="member-friends-count" hidden>0</span></button>
+              <button type="button" data-member-tab="messages"><svg aria-hidden="true"><use href="#i-message"/></svg> Nachrichten</button>
+              <button type="button" data-member-tab="profile"><svg aria-hidden="true"><use href="#i-user"/></svg> Profil &amp; Einstellungen</button>
+            </nav>
+            <div class="member-sidebar__bottom">
+              <p><span class="member-status-dot" aria-hidden="true"></span> Angemeldeter Mitgliederbereich</p>
+              <button class="member-link-button" id="member-sign-out" type="button">Abmelden</button>
+            </div>
+          </aside>
+
+          <div class="member-workspace">
+            <div class="member-workspace__topline"><span class="eyebrow">Underground Zound · Mitglieder</span><span id="member-welcome">Willkommen</span></div>
+            <section class="member-panel" id="member-panel-feed" data-member-panel="feed" aria-labelledby="member-feed-title">
+              <div class="member-panel__heading"><div><p class="eyebrow">Was geht gerade?</p><h2 id="member-feed-title" class="script"><span class="ini">C</span>ommunity Feed</h2></div><button class="member-icon-button" type="button" id="member-feed-refresh" aria-label="Feed aktualisieren" title="Feed aktualisieren">↻</button></div>
+              <div class="member-privacy-note">Deine Beiträge sind standardmäßig für angemeldete Mitglieder sichtbar. Du kannst einzelne Beiträge auf Freunde beschränken.</div>
+              <form class="member-composer" id="member-post-form" novalidate>
+                <div class="member-composer__top"><span class="member-avatar" id="member-composer-avatar" aria-hidden="true"></span><label class="visually-hidden" for="member-post-body">Dein Beitrag</label><textarea id="member-post-body" maxlength="3000" rows="3" placeholder="Was möchtest du mit der Community teilen?"></textarea></div>
+                <div class="member-composer__types" role="group" aria-label="Beitragsart">
+                  <button type="button" class="is-selected" aria-pressed="true" data-post-kind="text">Text</button>
+                  <button type="button" aria-pressed="false" data-post-kind="image"><svg aria-hidden="true"><use href="#i-picture"/></svg> Bild / GIF</button>
+                  <button type="button" aria-pressed="false" data-post-kind="video"><svg aria-hidden="true"><use href="#i-play"/></svg> Video</button>
+                  <button type="button" aria-pressed="false" data-post-kind="voice"><svg aria-hidden="true"><use href="#i-mic"/></svg> Sprachnotiz</button>
+                </div>
+                <div class="member-upload" id="member-upload-area" hidden>
+                  <label class="member-field member-upload__pick" id="member-file-label"><span id="member-file-label-text">Bild oder GIF auswählen</span><input type="file" id="member-post-file" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+                  <div class="member-recorder" id="member-recorder" hidden><button class="member-button member-button--ghost" id="member-record-start" type="button"><svg aria-hidden="true"><use href="#i-mic"/></svg> Aufnahme starten</button><button class="member-button member-button--danger" id="member-record-stop" type="button" disabled>Aufnahme beenden</button><span id="member-record-timer" aria-live="polite">00:00</span><span class="member-recorder__or">oder</span></div>
+                  <div class="member-upload__preview" id="member-upload-preview" hidden></div>
+                  <button class="member-link-button" type="button" id="member-clear-upload" hidden>Anhang entfernen</button>
+                </div>
+                <div class="member-composer__bottom"><label class="member-field member-visibility"><span class="visually-hidden">Sichtbarkeit</span><select id="member-post-visibility"><option value="members">Für Mitglieder</option><option value="friends">Nur Freunde</option></select></label><span class="member-form-status" id="member-post-status" role="status" aria-live="polite"></span><button class="member-button member-button--gold" id="member-post-submit" type="submit"><svg aria-hidden="true"><use href="#i-send"/></svg> Veröffentlichen</button></div>
+              </form>
+              <div class="member-feed-list" id="member-feed-list" aria-live="polite"></div>
+            </section>
+
+            <section class="member-panel" id="member-panel-pitch" data-member-panel="pitch" aria-labelledby="member-pitch-title" hidden>
+              <div class="member-pitch-card">
+                <span class="member-avatar member-avatar--xl" id="member-pitch-avatar" aria-hidden="true"></span>
+                <div class="member-pitch-card__info"><p class="eyebrow">Persönliche Pitch-Seite</p><h2 class="script" id="member-pitch-title">Deine Seite</h2><p id="member-pitch-handle" class="muted"></p><p id="member-pitch-bio" class="member-pitch-bio"></p><div id="member-pitch-details" class="member-pitch-details"></div></div>
+                <div class="member-pitch-card__actions"><button class="member-button member-button--ghost" id="member-pitch-friend" type="button" hidden>Freundschaft anfragen</button><button class="member-button member-button--gold" id="member-pitch-message" type="button" hidden>Nachricht schreiben</button></div>
+              </div>
+              <div class="member-panel__heading"><div><p class="eyebrow">Beiträge</p><h3 class="script">Pitch-Stream</h3></div><button class="member-icon-button" type="button" id="member-pitch-refresh" aria-label="Pitch-Seite aktualisieren" title="Aktualisieren">↻</button></div>
+              <div class="member-feed-list" id="member-pitch-posts"></div>
+            </section>
+
+            <section class="member-panel" id="member-panel-friends" data-member-panel="friends" aria-labelledby="member-friends-title" hidden>
+              <div class="member-panel__heading"><div><p class="eyebrow">Finde deine Leute</p><h2 id="member-friends-title" class="script"><span class="ini">F</span>reunde</h2></div></div>
+              <form class="member-search" id="member-search-form"><label class="visually-hidden" for="member-search-input">Mitglieder suchen</label><input id="member-search-input" type="search" maxlength="24" placeholder="Benutzername suchen …"><button class="member-button member-button--gold" type="submit">Suchen</button></form>
+              <p class="member-form-status" id="member-friends-status" role="status" aria-live="polite"></p>
+              <div class="member-friend-columns">
+                <section class="member-list-card"><h3>Mitglieder finden</h3><div class="member-person-list" id="member-search-results"><p class="member-empty">Suche nach einem Benutzernamen.</p></div></section>
+                <section class="member-list-card"><h3>Deine Freunde <span class="member-count" id="member-friend-total">0</span></h3><div class="member-person-list" id="member-friend-list"><p class="member-empty">Noch keine Freunde. Finde Mitglieder über die Suche.</p></div></section>
+              </div>
+              <div class="member-friend-columns member-friend-columns--requests">
+                <section class="member-list-card"><h3>Eingehende Anfragen</h3><div class="member-person-list" id="member-incoming-requests"><p class="member-empty">Keine neuen Anfragen.</p></div></section>
+                <section class="member-list-card"><h3>Ausgehende Anfragen</h3><div class="member-person-list" id="member-outgoing-requests"><p class="member-empty">Keine offenen Anfragen.</p></div></section>
+              </div>
+            </section>
+
+            <section class="member-panel" id="member-panel-messages" data-member-panel="messages" aria-labelledby="member-messages-title" hidden>
+              <div class="member-panel__heading"><div><p class="eyebrow">Direkt &amp; unkompliziert</p><h2 id="member-messages-title" class="script"><span class="ini">N</span>achrichten</h2></div></div>
+              <div class="member-chat">
+                <aside class="member-chat__list"><h3>Deine Chats</h3><div id="member-conversation-list" class="member-person-list"><p class="member-empty">Starte einen Chat über deine Freundesliste.</p></div></aside>
+                <div class="member-chat__thread">
+                  <div id="member-chat-empty" class="member-chat__empty"><svg aria-hidden="true"><use href="#i-message"/></svg><h3>Wähle einen Chat</h3><p>Direktnachrichten sind einfache 1:1-Textchats. Sie sind nicht Ende-zu-Ende-verschlüsselt.</p></div>
+                  <div id="member-chat-active" class="member-chat__active" hidden>
+                    <div class="member-chat__peer"><span class="member-avatar" id="member-chat-peer-avatar" aria-hidden="true"></span><div><strong id="member-chat-peer-name">Mitglied</strong><span id="member-chat-peer-handle"></span></div></div>
+                    <div class="member-chat__messages" id="member-chat-messages" role="log" aria-live="polite" aria-label="Nachrichtenverlauf"></div>
+                    <form class="member-chat__form" id="member-message-form"><label class="visually-hidden" for="member-message-input">Nachricht schreiben</label><textarea id="member-message-input" rows="2" maxlength="2000" placeholder="Nachricht schreiben …" required></textarea><button class="member-button member-button--gold" type="submit" aria-label="Nachricht senden"><svg aria-hidden="true"><use href="#i-send"/></svg><span>Senden</span></button></form>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="member-panel" id="member-panel-profile" data-member-panel="profile" aria-labelledby="member-profile-title" hidden>
+              <div class="member-panel__heading"><div><p class="eyebrow">Deine Angaben</p><h2 id="member-profile-title" class="script"><span class="ini">P</span>rofil &amp; Einstellungen</h2></div></div>
+              <form class="member-profile-form" id="member-profile-form" novalidate>
+                <div class="member-profile-form__avatar">
+                  <span class="member-avatar member-avatar--xl" id="member-profile-avatar-preview" aria-hidden="true"></span>
+                  <label class="member-field"><span>Profilbild (GIF, JPG, PNG oder WebP; max. 5 MB)</span><input type="file" id="member-avatar-file" accept="image/jpeg,image/png,image/webp,image/gif"><small>Animierte GIF-Profilbilder werden unterstützt.</small></label>
+                  <p class="member-profile-email">Login-E-Mail: <strong id="member-profile-email">–</strong><br><span>Deine E-Mail-Adresse wird anderen Mitgliedern nicht angezeigt.</span></p>
+                </div>
+                <div class="member-profile-form__grid">
+                  <label class="member-field"><span>Anzeigename</span><input id="member-profile-name" type="text" maxlength="60" required></label>
+                  <label class="member-field"><span>Benutzername</span><span class="member-input-prefix"><span aria-hidden="true">@</span><input id="member-profile-username" type="text" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}" required></span></label>
+                  <label class="member-field"><span>Wohnort (optional)</span><input id="member-profile-city" type="text" maxlength="80" autocomplete="address-level2"></label>
+                  <label class="member-field"><span>Pronomen (optional)</span><input id="member-profile-pronouns" type="text" maxlength="40" placeholder="z. B. er/ihm"></label>
+                  <label class="member-field"><span>Geburtstag (optional)</span><input id="member-profile-birthday" type="date"></label>
+                  <label class="member-field"><span>Lieblingsgenres (optional)</span><input id="member-profile-genres" type="text" maxlength="120" placeholder="Techno, House, …"></label>
+                  <label class="member-field"><span>Website oder Link (optional)</span><input id="member-profile-website" type="url" maxlength="300" placeholder="https://…"></label>
+                  <label class="member-field"><span>SoundCloud-Profil (optional)</span><input id="member-profile-soundcloud" type="url" maxlength="300" placeholder="https://soundcloud.com/…"></label>
+                  <label class="member-field member-field--wide"><span>Kurzvorstellung</span><textarea id="member-profile-bio" rows="4" maxlength="600" placeholder="Erzähl der Community ein bisschen von dir …"></textarea></label>
+                  <label class="member-field"><span>Profil-Sichtbarkeit</span><select id="member-profile-visibility"><option value="members">Für angemeldete Mitglieder</option><option value="friends">Nur für Freunde</option></select></label>
+                </div>
+                <div class="member-profile-form__footer"><span class="member-form-status" id="member-profile-status" role="status" aria-live="polite"></span><button class="member-button member-button--gold" type="submit">Profil speichern</button></div>
+              </form>
+              <div class="member-account-actions"><div><h3>Konto</h3><p>Du kannst die Löschung deines Kontos anfordern. Der Betreiber muss den Antrag anschließend bearbeiten.</p></div><button class="member-button member-button--danger" type="button" id="member-delete-request">Konto-Löschung anfordern</button></div>
+            </section>
+          </div>
+        </div>
+
+        <noscript><p class="member-notice">Für den Mitgliederbereich muss JavaScript aktiviert sein.</p></noscript>
       </div>
     </section>
   </main>
@@ -679,6 +885,8 @@
     <p class="site-footer__copy">© 2018 by Leib &amp; Seele Records</p>
     <p class="site-footer__links">
       <a href="#kontakt">Contact</a>
+      <span aria-hidden="true">·</span>
+      <a href="#club">Mitgliederbereich</a>
       <span aria-hidden="true">·</span>
       <a href="#disclaimer">Disclaimer</a>
       <span aria-hidden="true">·</span>
@@ -712,5 +920,7 @@
   </div>
 
   <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/member-config.js" defer></script>
+  <script src="assets/js/community.js" defer></script>
 </body>
 </html>
