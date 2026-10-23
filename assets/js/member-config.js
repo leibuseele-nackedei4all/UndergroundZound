@@ -5,6 +5,6 @@
  * to be public and is safe only when the database/storage RLS policies are on.
  */
 window.MEMBER_CONFIG = Object.freeze({
-  supabaseUrl: '',
-  supabasePublicKey: ''
+  supabaseUrl: 'https://vrheeikcssxmbnsektcw.supabase.co/rest/v1/',
+  supabasePublicKey: 'sb_publishable_zQ-oAP4j9X-4oBSz9vMQLg_Fl35S8KX'
 });
