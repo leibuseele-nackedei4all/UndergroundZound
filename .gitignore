@@ -1,0 +1,4 @@
+
+# lokale Test-Abhängigkeiten (jsdom für tools/admin-smoke-test.js)
+node_modules/
+package-lock.json

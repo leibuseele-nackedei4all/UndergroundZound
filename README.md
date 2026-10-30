@@ -20,6 +20,7 @@ The public music site is a static HTML/CSS/JavaScript website and can be hosted 
 | **Contact** | `#kontakt` | Contact details and form |
 | **Disclaimer** | `#disclaimer` | Existing site disclaimer and hosting notes |
 | **Mitgliederbereich** | `#club` | Login / registration, community feed, personal pitch pages, profiles, friends and direct messages |
+| **Admin-Bereich** | `admin.html` | Anmeldung nur für Administratoren, danach die komplette Verwaltung (Mitglieder, Beiträge, Meldungen, Nachrichten, Medien, Einstellungen, Protokoll) |
 
 The community includes text, image/GIF, video and voice-note posts; comments, likes and shares; optional friends-only profile/post visibility; friend requests; straightforward 1:1 text chat; Google/Facebook OAuth; profile editing; and account-deletion requests. Member uploads live in private Supabase buckets and are served with short-lived signed URLs. Row Level Security (RLS) is part of the database migration — **do not remove or weaken it**.
 
@@ -56,11 +57,65 @@ The public website can stay on GitHub Pages, but logins, posts, uploads and chat
    values ('YOUR_AUTH_USER_UUID');
    ```
 
-   The `reports` and `account_deletion_requests` tables are available to admins for review in Supabase. This first version does not include an in-site moderator console; use the Supabase dashboard to review the queues and disable accounts when necessary.
+   For the full in-site console (members, posts, reports, messages, media, settings, audit log) additionally run `supabase/migrations/202610300001_admin_console.sql` — see **Der Admin-Bereich** below. It also promotes `leibuseele@gmail.com` automatically.
 8. **Finish legal and operational setup before opening registration.** The existing Disclaimer is not a complete privacy notice for a social community. Add accurate German-language privacy information, terms/community rules, a complete Impressum and your retention/contact details before inviting members. State the actual Supabase region, OAuth providers, data collected, retention and account-deletion process. The site owner is responsible for those policies and for moderation.
 9. **Deploy and test.** Publish the updated `member-config.js`, then test email confirmation, password reset, Google/Facebook redirects, profile editing (including animated GIF), friends, friend-only visibility, media uploads, comments/shares, 1:1 messages and deletion requests using two test accounts.
 
 Without steps 1–4 the member forms remain disabled. The Supabase browser SDK is vendored at `assets/js/vendor/supabase.min.js` (MIT licence alongside it) and loaded only when the member page is opened.
+
+## Der Admin-Bereich (`admin.html`)
+
+Die Anmeldeseite liegt unter **`admin.html`** (verlinkt im Footer der Website und – nur für
+Administratoren sichtbar – in der Seitenleiste des Mitgliederbereichs). Nach der Anmeldung
+steht eine vollständige Verwaltungskonsole zur Verfügung:
+
+| Bereich | Funktionen |
+|---|---|
+| **Übersicht** | Kennzahlen (Mitglieder, Sperren, Beiträge, Kommentare, Meldungen, Löschanträge, Nachrichten, Freundschaften, Medien, Administratoren), letzte Aktivitäten |
+| **Mitglieder** | Suche (Name, Benutzername, E-Mail, Stadt), Sortierung, Detailansicht mit allen Profil- und Aktivitätsdaten, Profil bearbeiten, Adminrechte vergeben/entziehen, Sperren (1/7/30/90 Tage oder unbefristet, mit Grund), Konto endgültig löschen |
+| **Administratoren** | Liste aller Konten mit Adminrechten, Rechte entziehen (der letzte Admin und das eigene Konto sind geschützt) |
+| **Beiträge** | Filter nach Text/Autor, Art und Sichtbarkeit, Bildvorschau, Zahlen zu Likes/Kommentaren/Shares, Beitrag samt Anhang löschen |
+| **Kommentare** | Suche, Beitragszuordnung, löschen |
+| **Meldungen** | Status-Workflow (neu → in Prüfung → erledigt/verworfen) mit interner Notiz, gemeldeten Beitrag oder Profil öffnen, Inhalt löschen, Konto sperren |
+| **Löschanträge** | Status pflegen, Notiz hinterlegen, Konto endgültig löschen |
+| **Freundschaften** | alle Beziehungen einsehen, löschen |
+| **Nachrichten** | Unterhaltungen einsehen, einzelne Nachrichten oder die ganze Unterhaltung löschen (Zugriff wird protokolliert) |
+| **Medien** | Beiträge-Medien und Profilbilder, Vorschau, Größe, Besitzer, Datei öffnen/löschen |
+| **Einstellungen** | Mitgliederbereich öffnen/schließen, Registrierung, Nachrichten, Freundschaften, Uploads, maximale Upload-Größe, Hinweis-Banner (Titel/Text/Art), Wartungsmodus mit Text, Support-E-Mail, Link zu den Community-Regeln |
+| **Protokoll** | jede Admin-Aktion mit Konto, Ziel und Zeitstempel |
+
+### Einrichtung (einmalig)
+
+1. **Konto anlegen:** In Supabase unter *Authentication → Users* den Benutzer
+   **`leibuseele@gmail.com`** anlegen und bestätigen. Das Passwort wird nur in Supabase
+   gespeichert – niemals im Repository.
+2. **Datenbank erweitern:** `supabase/migrations/202610300001_admin_console.sql` im
+   *SQL Editor* ausführen. Die Datei legt `member_bans`, `site_settings` und
+   `admin_audit_log` an, ergänzt die RLS-Regeln und trägt das Konto oben automatisch in
+   `public.app_admins` ein.
+3. **Konfiguration prüfen:** `assets/js/member-config.js` enthält die Projekt-URL
+   (`https://PROJEKT.supabase.co`, **ohne** `/rest/v1/`) und den Publishable Key.
+4. **Anmelden:** `https://leibuseele-nackedei4all.github.io/UndergroundZound/admin.html`
+   öffnen und mit dieser E-Mail-Adresse und dem in Supabase gesetzten Passwort einloggen.
+
+Ohne Eintrag in `public.app_admins` verweigert die Anmeldeseite den Zugriff und meldet die
+Sitzung sofort wieder ab. Ein zusätzliches Admin-Konto lässt sich später direkt in der
+Konsole unter *Mitglieder → „Zum Admin“* vergeben.
+
+### Sicherheit
+
+- Jede Admin-Funktion (`admin_*`) ist `SECURITY DEFINER`, prüft **serverseitig** die
+  Mitgliedschaft in `public.app_admins` und ist nur für `authenticated` freigegeben.
+  `anon` hat keinerlei Zugriff; die Konsole ist reine Oberfläche.
+- Der Browser nutzt ausschließlich den Publishable/anon-Key. **Kein `service_role`-Key im
+  Repository oder im Browser.**
+- Ein gesperrtes Mitglied (`member_bans`) verliert über `is_active_member()` alle
+  Schreibrechte: Beiträge, Kommentare, Likes, Shares, Nachrichten und Uploads.
+- Die öffentliche Website liest nur die wenigen Freigaben über `get_public_settings()`.
+- Alle Admin-Aktionen landen in `public.admin_audit_log`, inklusive Lesezugriff auf
+  Unterhaltungen.
+- Passwörter werden nie im Klartext gespeichert; „Passwort vergessen?“ auf der
+  Anmeldeseite verschickt einen Supabase-Reset-Link zurück auf `admin.html`.
 
 ## Edit the site
 
@@ -73,22 +128,27 @@ Everything can be edited directly on GitHub (open a file → pencil icon) or wit
 - **Add a SoundCloud track:** copy an `<article class="track" …>` block and change `data-src`, `data-title`, `data-artist`, `data-cover` and its visible texts. Put square cover art (about 400×400) in `assets/img/covers/`.
 - **Add an MP3:** put it in `assets/audio/` and use `data-type="audio"` with `data-src="assets/audio/your-file.mp3"`.
 - **Colours / fonts:** `assets/css/style.css` — design tokens are at the top.
+- **Admin-Bereich:** `admin.html` (Konsole) – alle Optionen oben beschrieben.
 - **Preview:** run `python3 -m http.server 8080` in the project folder and open `http://localhost:8080`. The member interface can be previewed without Supabase, but login controls stay disabled.
 
 ## Folder structure
 
 ```
 index.html                         public site + member area markup
+admin.html                         admin login + console markup
+assets/css/admin.css               layout for the admin console
 404.html                           old Wix links + not-found page
 assets/css/style.css               design, responsive layout and member area
 assets/js/main.js                  public navigation, player and embeds
 assets/js/community.js             auth, feed, profiles, friends and chat
+assets/js/admin.js                 admin console (calls the admin_* RPCs)
 assets/js/member-config.js          empty public Supabase config template
 assets/js/vendor/                  locally hosted Supabase JS + MIT licence
 assets/img/                         logo, emblem, covers, background and icons
 assets/audio/                       self-hosted music (MP3, 128 kbps)
 assets/fonts/                       Lobster + Raleway (SIL Open Font License)
-supabase/migrations/                community schema, RLS, storage and chat setup
+supabase/migrations/                community schema, RLS, storage, chat and admin console setup
+tools/admin-smoke-test.js          local jsdom smoke test of the admin console
 site.webmanifest                    name + icon for mobile home-screen install
 .nojekyll                           publishes files directly through GitHub Pages
 ```

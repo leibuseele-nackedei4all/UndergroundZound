@@ -1112,3 +1112,35 @@ main:focus { outline: none; }
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
   .marquee__track { animation: none; }
 }
+
+/* ---------- Vom Admin-Bereich gesteuerte Zustände & Hinweise ---------- */
+.member-notice-dynamic { display: grid; gap: .3rem; }
+.member-notice-dynamic strong { color: var(--gold-light); }
+.member-notice-dynamic span { color: var(--text); }
+.member-announcement { max-width: 100%; margin-bottom: 1.2rem; border-color: rgba(237,200,88,.45); }
+.member-maintenance { max-width: 100%; margin-bottom: 1.2rem; border-color: rgba(224,69,63,.65); background: rgba(53,10,12,.85); }
+#club.no-registration [data-auth-mode="register"] { display: none; }
+#club.no-registration .member-auth__tabs { grid-template-columns: 1fr; }
+#club.is-closed #member-login-form,
+#club.is-closed .member-social-login,
+#club.is-closed .member-auth__divider,
+#club.is-closed .member-check--social { opacity: .4; pointer-events: none; }
+#club.is-banned .member-composer,
+#club.is-banned #member-message-form,
+#club.is-banned #member-search-form { opacity: .5; pointer-events: none; }
+.member-sidebar__admin {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: .6rem;
+  padding: .5rem .6rem;
+  border: 1px solid rgba(237,200,88,.45);
+  border-radius: 9px;
+  background: rgba(237,200,88,.12);
+  color: var(--gold-light);
+  font-size: .78rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+.member-sidebar__admin:hover { background: rgba(237,200,88,.2); }
+.member-sidebar__admin svg { width: 16px; height: 16px; }

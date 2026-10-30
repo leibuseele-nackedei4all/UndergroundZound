@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Admin-Bereich | Leib &amp; Seele</title>
+  <meta name="description" content="Geschützter Administrationsbereich der Leib &amp; Seele Community.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#0a0908">
+  <meta name="color-scheme" content="dark">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/lobster-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/raleway-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body class="admin-body">
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="a-logo" viewBox="0 0 100 88"><g fill="none" stroke="currentColor" stroke-linejoin="round"><path stroke-width="4" d="M50 4 96 84H4z"/><path stroke-width="2" d="M50 4v53M50 57 4 84M50 57l46 27"/></g></symbol>
+    <symbol id="a-dashboard" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></g></symbol>
+    <symbol id="a-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20c.7-3.5 3.2-5.3 7.5-5.3s6.8 1.8 7.5 5.3"/></g></symbol>
+    <symbol id="a-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><path d="M2.8 20c.5-3.1 2.6-4.7 6.2-4.7s5.7 1.6 6.2 4.7M16.2 5.2a3 3 0 0 1 0 5.7M17 15.6c2.4.6 3.8 2.1 4.2 4.4"/></g></symbol>
+    <symbol id="a-feed" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5h14M5 10h14M5 15h9"/><circle cx="18" cy="17.5" r="2.5"/></g></symbol>
+    <symbol id="a-comment" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M4 4.5h16v12H9l-5 3v-15zM8 9h8M8 12.5h5"/></symbol>
+    <symbol id="a-flag" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M6 21V4h12l-2.5 4.5L18 13H6"/></symbol>
+    <symbol id="a-trash-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="7" r="3"/><path d="M4 20c.5-3 2.5-4.6 6-4.6 1 0 1.9.2 2.7.5"/><path d="M15 17.5h6M18 14.5v6"/></g></symbol>
+    <symbol id="a-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4.5" y="10" width="15" height="10.5" rx="2"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/></g></symbol>
+    <symbol id="a-message" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M4 4.5h16v12H9l-5 3v-15zM8 9h8M8 12.5h5"/></symbol>
+    <symbol id="a-picture" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-4 3 2 3-4 5 5"/></g></symbol>
+    <symbol id="a-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 3 4.5 6v6c0 4.2 3 7.4 7.5 9 4.5-1.6 7.5-4.8 7.5-9V6z"/></symbol>
+    <symbol id="a-sliders" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2.2" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="2.2" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17" r="2.2" fill="currentColor" stroke="none"/></g></symbol>
+    <symbol id="a-log" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></g></symbol>
+    <symbol id="a-refresh" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M20 12a8 8 0 1 1-2.4-5.7M20 4v4h-4"/></symbol>
+    <symbol id="a-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></g></symbol>
+    <symbol id="a-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m5 13 4.5 4.5L19 7"/></symbol>
+    <symbol id="a-logout" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H14"/><path d="M17 8.5 20.5 12 17 15.5M11 12h9.5"/></g></symbol>
+  </svg>
+
+  <a class="skip-link" href="#admin-main">Zum Inhalt springen</a>
+
+  <!-- ============ Kopfzeile ============ -->
+  <header class="admin-header">
+    <div class="admin-header__inner">
+      <a class="admin-brand" href="index.html" aria-label="Zurück zur Website">
+        <svg aria-hidden="true"><use href="#a-logo"/></svg>
+        <span><strong class="script">Leib &amp; Seele</strong><em>Admin-Bereich</em></span>
+      </a>
+      <div class="admin-header__side">
+        <span class="admin-session" id="admin-session" hidden>
+          <span class="admin-session__avatar" id="admin-session-avatar" aria-hidden="true"></span>
+          <span class="admin-session__text"><strong id="admin-session-name">Admin</strong><em id="admin-session-email"></em></span>
+        </span>
+        <a class="admin-header__link" href="index.html#club">Mitgliederbereich</a>
+        <button class="admin-button admin-button--ghost admin-button--small" id="admin-sign-out" type="button" hidden>
+          <svg aria-hidden="true"><use href="#a-logout"/></svg> Abmelden
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="admin-main" class="admin-main" tabindex="-1">
+
+    <!-- ============ Anmeldung ============ -->
+    <section class="admin-gate" id="admin-gate" aria-labelledby="admin-gate-title">
+      <div class="admin-gate__panel">
+        <div class="admin-gate__intro">
+          <p class="eyebrow">Nur für Betreiber</p>
+          <h1 class="script" id="admin-gate-title"><span class="ini">A</span>dmin-Anmeldung</h1>
+          <p>Dieser Bereich verwaltet Mitglieder, Beiträge, Meldungen, Nachrichten, Medien und die Einstellungen der Website. Jede Aktion wird protokolliert.</p>
+          <ul class="admin-gate__facts">
+            <li><svg aria-hidden="true"><use href="#a-shield"/></svg> Zugriff nur für Konten in <code>app_admins</code></li>
+            <li><svg aria-hidden="true"><use href="#a-lock"/></svg> Prüfung erfolgt serverseitig in Supabase</li>
+            <li><svg aria-hidden="true"><use href="#a-log"/></svg> Vollständiges Admin-Protokoll</li>
+          </ul>
+        </div>
+        <div class="admin-gate__body">
+          <div class="admin-flash" id="admin-flash" role="status" aria-live="polite" hidden></div>
+          <div class="admin-flash admin-flash--setup" id="admin-setup-note" role="status" hidden>
+            <strong>Noch nicht verbunden.</strong>
+            <span>Die Supabase-Zugangsdaten fehlen in <code>assets/js/member-config.js</code>. Anmeldedaten werden deshalb nicht angenommen.</span>
+          </div>
+          <form class="admin-form" id="admin-login-form" novalidate>
+            <label class="admin-field"><span>E-Mail-Adresse</span>
+              <input id="admin-login-email" type="email" autocomplete="username" required placeholder="du@beispiel.de" disabled>
+            </label>
+            <label class="admin-field"><span>Passwort</span>
+              <input id="admin-login-password" type="password" autocomplete="current-password" required placeholder="Passwort" disabled>
+            </label>
+            <label class="admin-check"><input id="admin-login-show" type="checkbox"><span>Passwort anzeigen</span></label>
+            <button class="admin-button admin-button--gold admin-button--wide" id="admin-login-submit" type="submit" disabled>
+              <svg aria-hidden="true"><use href="#a-lock"/></svg> Als Admin anmelden
+            </button>
+            <button class="admin-link-button" id="admin-forgot-password" type="button" disabled>Passwort vergessen?</button>
+          </form>
+          <details class="admin-hintbox">
+            <summary>Zugang einrichten / Passwort ändern</summary>
+            <ol>
+              <li>Konto <strong id="admin-hint-email">leibuseele@gmail.com</strong> anlegen – entweder im Mitgliederbereich registrieren und die E-Mail bestätigen oder in Supabase unter <em>Authentication → Users</em> hinzufügen. Das Passwort setzt du dabei selbst.</li>
+              <li>Einmalig <code>supabase/migrations/202610300001_admin_console.sql</code> im SQL-Editor ausführen – es trägt dieses Konto automatisch als Admin ein und legt alle Admin-Funktionen an.</li>
+              <li>Konto schon vorhanden? Die letzte Zeile der Migration jederzeit erneut ausführen: <code>insert into public.app_admins (user_id) select id from auth.users where lower(email) = lower('leibuseele@gmail.com') on conflict do nothing;</code></li>
+            </ol>
+            <p>Die Anmeldung läuft ausschließlich über Supabase Auth – Passwörter werden nirgends im Repository oder im Browser gespeichert. Ändern kannst du das Passwort im Mitgliederbereich unter <em>Profil &amp; Einstellungen</em> oder über „Passwort vergessen?“ (der Link führt zurück auf diese Seite).</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Konsole ============ -->
+    <div class="admin-shell" id="admin-console" hidden>
+      <aside class="admin-sidebar" aria-label="Admin-Navigation">
+        <p class="admin-sidebar__label">Verwaltung</p>
+        <nav class="admin-nav" id="admin-nav">
+          <button class="is-active" type="button" data-admin-tab="dashboard"><svg aria-hidden="true"><use href="#a-dashboard"/></svg> Übersicht</button>
+          <button type="button" data-admin-tab="members"><svg aria-hidden="true"><use href="#a-users"/></svg> Mitglieder <span class="admin-nav__count" id="admin-count-members" hidden>0</span></button>
+          <button type="button" data-admin-tab="admins"><svg aria-hidden="true"><use href="#a-shield"/></svg> Administratoren</button>
+          <button type="button" data-admin-tab="posts"><svg aria-hidden="true"><use href="#a-feed"/></svg> Beiträge</button>
+          <button type="button" data-admin-tab="comments"><svg aria-hidden="true"><use href="#a-comment"/></svg> Kommentare</button>
+          <button type="button" data-admin-tab="reports"><svg aria-hidden="true"><use href="#a-flag"/></svg> Meldungen <span class="admin-nav__count" id="admin-count-reports" hidden>0</span></button>
+          <button type="button" data-admin-tab="deletions"><svg aria-hidden="true"><use href="#a-trash-user"/></svg> Löschanträge <span class="admin-nav__count" id="admin-count-deletions" hidden>0</span></button>
+          <button type="button" data-admin-tab="friends"><svg aria-hidden="true"><use href="#a-users"/></svg> Freundschaften</button>
+          <button type="button" data-admin-tab="messages"><svg aria-hidden="true"><use href="#a-message"/></svg> Nachrichten</button>
+          <button type="button" data-admin-tab="media"><svg aria-hidden="true"><use href="#a-picture"/></svg> Medien</button>
+        </nav>
+        <p class="admin-sidebar__label">Website</p>
+        <nav class="admin-nav">
+          <button type="button" data-admin-tab="settings"><svg aria-hidden="true"><use href="#a-sliders"/></svg> Einstellungen</button>
+          <button type="button" data-admin-tab="audit"><svg aria-hidden="true"><use href="#a-log"/></svg> Protokoll</button>
+        </nav>
+        <div class="admin-sidebar__footer">
+          <p><span class="admin-dot" aria-hidden="true"></span> Angemeldet als Admin</p>
+          <p class="admin-sidebar__hint">Jede Änderung wird mit Zeitstempel protokolliert.</p>
+        </div>
+      </aside>
+
+      <div class="admin-workspace">
+        <div class="admin-topline">
+          <span class="eyebrow">Underground Zound · Administration</span>
+          <button class="admin-button admin-button--ghost admin-button--small" id="admin-refresh" type="button">
+            <svg aria-hidden="true"><use href="#a-refresh"/></svg> Aktualisieren
+          </button>
+        </div>
+
+        <!-- Übersicht -->
+        <section class="admin-panel" data-admin-panel="dashboard" aria-labelledby="admin-title-dashboard">
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Alles auf einen Blick</p><h2 class="script" id="admin-title-dashboard"><span class="ini">Ü</span>bersicht</h2></div>
+            <span class="admin-muted" id="admin-dashboard-stamp"></span>
+          </div>
+          <div class="admin-stats" id="admin-stats"></div>
+          <div class="admin-grid admin-grid--two">
+            <div class="admin-card"><h3>Neueste Mitglieder</h3><div class="admin-mini-list" id="admin-latest-members"></div></div>
+            <div class="admin-card"><h3>Neueste Beiträge</h3><div class="admin-mini-list" id="admin-latest-posts"></div></div>
+            <div class="admin-card"><h3>Offene Meldungen</h3><div class="admin-mini-list" id="admin-latest-reports"></div></div>
+            <div class="admin-card"><h3>Letzte Admin-Aktionen</h3><div class="admin-mini-list" id="admin-latest-audit"></div></div>
+          </div>
+          <div class="admin-actions-row">
+            <button class="admin-button admin-button--ghost" type="button" data-admin-jump="members">Mitglieder verwalten</button>
+            <button class="admin-button admin-button--ghost" type="button" data-admin-jump="reports">Meldungen prüfen</button>
+            <button class="admin-button admin-button--ghost" type="button" data-admin-jump="settings">Website-Einstellungen</button>
+          </div>
+        </section>
+
+        <!-- Mitglieder -->
+        <section class="admin-panel" data-admin-panel="members" aria-labelledby="admin-title-members" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Konten &amp; Profile</p><h2 class="script" id="admin-title-members"><span class="ini">M</span>itglieder</h2></div>
+            <span class="admin-muted" id="admin-members-count"></span>
+          </div>
+          <div class="admin-toolbar">
+            <form class="admin-search" id="admin-members-search">
+              <svg aria-hidden="true"><use href="#a-search"/></svg>
+              <input id="admin-members-query" type="search" placeholder="Name, Benutzername, E-Mail oder Stadt" aria-label="Mitglieder durchsuchen">
+            </form>
+            <label class="admin-select"><span class="visually-hidden">Sortierung</span>
+              <select id="admin-members-sort">
+                <option value="newest">Neueste zuerst</option>
+                <option value="oldest">Älteste zuerst</option>
+                <option value="name">Name A–Z</option>
+                <option value="activity">Zuletzt aktiv</option>
+              </select>
+            </label>
+            <button class="admin-button admin-button--gold admin-button--small" type="button" id="admin-members-apply">Suchen</button>
+          </div>
+          <div class="admin-list" id="admin-members-list" aria-live="polite"></div>
+          <div class="admin-pager" data-pager="members"></div>
+        </section>
+
+        <!-- Administratoren -->
+        <section class="admin-panel" data-admin-panel="admins" aria-labelledby="admin-title-admins" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Rechte</p><h2 class="script" id="admin-title-admins"><span class="ini">A</span>dministratoren</h2></div>
+          </div>
+          <p class="admin-note">Nur diese Konten sehen den Admin-Bereich. Rechte vergibst du in der Mitgliederliste über „Admin geben“.</p>
+          <div class="admin-list" id="admin-admins-list"></div>
+        </section>
+
+        <!-- Beiträge -->
+        <section class="admin-panel" data-admin-panel="posts" aria-labelledby="admin-title-posts" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Community Feed</p><h2 class="script" id="admin-title-posts"><span class="ini">B</span>eiträge</h2></div>
+            <span class="admin-muted" id="admin-posts-count"></span>
+          </div>
+          <div class="admin-toolbar">
+            <form class="admin-search" id="admin-posts-search">
+              <svg aria-hidden="true"><use href="#a-search"/></svg>
+              <input id="admin-posts-query" type="search" placeholder="Text oder Autor durchsuchen" aria-label="Beiträge durchsuchen">
+            </form>
+            <label class="admin-select"><span class="visually-hidden">Art</span>
+              <select id="admin-posts-kind">
+                <option value="">Alle Arten</option>
+                <option value="text">Text</option>
+                <option value="image">Bild / GIF</option>
+                <option value="video">Video</option>
+                <option value="voice">Sprachnotiz</option>
+              </select>
+            </label>
+            <label class="admin-select"><span class="visually-hidden">Sichtbarkeit</span>
+              <select id="admin-posts-visibility">
+                <option value="">Alle Sichtbarkeiten</option>
+                <option value="members">Für Mitglieder</option>
+                <option value="friends">Nur Freunde</option>
+              </select>
+            </label>
+            <button class="admin-button admin-button--gold admin-button--small" type="button" id="admin-posts-apply">Filtern</button>
+          </div>
+          <div class="admin-list" id="admin-posts-list" aria-live="polite"></div>
+          <div class="admin-pager" data-pager="posts"></div>
+        </section>
+
+        <!-- Kommentare -->
+        <section class="admin-panel" data-admin-panel="comments" aria-labelledby="admin-title-comments" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Diskussionen</p><h2 class="script" id="admin-title-comments"><span class="ini">K</span>ommentare</h2></div>
+            <span class="admin-muted" id="admin-comments-count"></span>
+          </div>
+          <div class="admin-toolbar">
+            <form class="admin-search" id="admin-comments-search">
+              <svg aria-hidden="true"><use href="#a-search"/></svg>
+              <input id="admin-comments-query" type="search" placeholder="Kommentar oder Autor durchsuchen" aria-label="Kommentare durchsuchen">
+            </form>
+            <button class="admin-button admin-button--gold admin-button--small" type="button" id="admin-comments-apply">Suchen</button>
+          </div>
+          <div class="admin-list" id="admin-comments-list" aria-live="polite"></div>
+          <div class="admin-pager" data-pager="comments"></div>
+        </section>
+
+        <!-- Meldungen -->
+        <section class="admin-panel" data-admin-panel="reports" aria-labelledby="admin-title-reports" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Moderation</p><h2 class="script" id="admin-title-reports"><span class="ini">M</span>eldungen</h2></div>
+            <span class="admin-muted" id="admin-reports-count"></span>
+          </div>
+          <div class="admin-toolbar">
+            <label class="admin-select"><span class="visually-hidden">Status</span>
+              <select id="admin-reports-status">
+                <option value="">Alle Status</option>
+                <option value="new" selected>Neu</option>
+                <option value="reviewing">In Prüfung</option>
+                <option value="resolved">Erledigt</option>
+                <option value="dismissed">Verworfen</option>
+              </select>
+            </label>
+          </div>
+          <div class="admin-list" id="admin-reports-list" aria-live="polite"></div>
+          <div class="admin-pager" data-pager="reports"></div>
+        </section>
+
+        <!-- Löschanträge -->
+        <section class="admin-panel" data-admin-panel="deletions" aria-labelledby="admin-title-deletions" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">DSGVO</p><h2 class="script" id="admin-title-deletions"><span class="ini">L</span>öschanträge</h2></div>
+            <span class="admin-muted" id="admin-deletions-count"></span>
+          </div>
+          <p class="admin-note">Ein Antrag wird erst mit „Konto endgültig löschen“ ausgeführt. Das entfernt Profil, Beiträge, Medien, Freundschaften und Nachrichten unwiderruflich.</p>
+          <div class="admin-list" id="admin-deletions-list" aria-live="polite"></div>
+          <div class="admin-pager" data-pager="deletions"></div>
+        </section>
+
+        <!-- Freundschaften -->
+        <section class="admin-panel" data-admin-panel="friends" aria-labelledby="admin-title-friends" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Beziehungen</p><h2 class="script" id="admin-title-friends"><span class="ini">F</span>reundschaften</h2></div>
+            <span class="admin-muted" id="admin-friends-count"></span>
+          </div>
+          <div class="admin-toolbar">
+            <label class="admin-select"><span class="visually-hidden">Status</span>
+              <select id="admin-friends-status">
+                <option value="">Alle</option>
+                <option value="pending">Offen</option>
+                <option value="accepted">Bestätigt</option>
+                <option value="declined">Abgelehnt</option>
+                <option value="removed">Entfernt</option>
+              </select>
+            </label>
+            <form class="admin-search" id="admin-friends-search">
+              <svg aria-hidden="true"><use href="#a-search"/></svg>
+              <input id="admin-friends-query" type="search" placeholder="Mitglied durchsuchen" aria-label="Freundschaften durchsuchen">
+            </form>
+            <button class="admin-button admin-button--gold admin-button--small" type="button" id="admin-friends-apply">Filtern</button>
+          </div>
+          <div class="admin-list" id="admin-friends-list" aria-live="polite"></div>
+          <div class="admin-pager" data-pager="friends"></div>
+        </section>
+
+        <!-- Nachrichten -->
+        <section class="admin-panel" data-admin-panel="messages" aria-labelledby="admin-title-messages" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Direktnachrichten</p><h2 class="script" id="admin-title-messages"><span class="ini">N</span>achrichten</h2></div>
+            <span class="admin-muted" id="admin-messages-count"></span>
+          </div>
+          <p class="admin-note">Nachrichten sind nicht Ende-zu-Ende-verschlüsselt, aber privat. Öffne eine Unterhaltung nur bei einem konkreten Moderationsanlass – der Zugriff wird protokolliert.</p>
+          <form class="admin-search admin-search--wide" id="admin-messages-search">
+            <svg aria-hidden="true"><use href="#a-search"/></svg>
+            <input id="admin-messages-query" type="search" placeholder="Unterhaltung nach Mitglied suchen" aria-label="Unterhaltungen durchsuchen">
+          </form>
+          <div class="admin-split">
+            <div class="admin-list" id="admin-conversations-list" aria-live="polite"></div>
+            <div class="admin-card admin-chatview" id="admin-conversation-view">
+              <h3>Unterhaltung</h3>
+              <p class="admin-muted">Wähle links eine Unterhaltung aus.</p>
+            </div>
+          </div>
+          <div class="admin-pager" data-pager="messages"></div>
+        </section>
+
+        <!-- Medien -->
+        <section class="admin-panel" data-admin-panel="media" aria-labelledby="admin-title-media" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Speicher</p><h2 class="script" id="admin-title-media"><span class="ini">M</span>edien</h2></div>
+            <span class="admin-muted" id="admin-media-count"></span>
+          </div>
+          <div class="admin-toolbar">
+            <label class="admin-select"><span class="visually-hidden">Speicherbereich</span>
+              <select id="admin-media-bucket">
+                <option value="member-media">Beitrags-Medien</option>
+                <option value="avatars">Profilbilder</option>
+              </select>
+            </label>
+            <form class="admin-search" id="admin-media-search">
+              <svg aria-hidden="true"><use href="#a-search"/></svg>
+              <input id="admin-media-query" type="search" placeholder="Dateipfad durchsuchen" aria-label="Medien durchsuchen">
+            </form>
+            <button class="admin-button admin-button--gold admin-button--small" type="button" id="admin-media-apply">Filtern</button>
+          </div>
+          <div class="admin-list admin-list--media" id="admin-media-list" aria-live="polite"></div>
+          <div class="admin-pager" data-pager="media"></div>
+        </section>
+
+        <!-- Einstellungen -->
+        <section class="admin-panel" data-admin-panel="settings" aria-labelledby="admin-title-settings" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Website steuern</p><h2 class="script" id="admin-title-settings"><span class="ini">E</span>instellungen</h2></div>
+          </div>
+          <form class="admin-settings" id="admin-settings-form">
+            <div class="admin-card">
+              <h3>Zugang &amp; Funktionen</h3>
+              <label class="admin-switch"><input type="checkbox" data-setting="member_area_open"><span><strong>Mitgliederbereich geöffnet</strong><em>Aus = Mitglieder können sich nicht anmelden.</em></span></label>
+              <label class="admin-switch"><input type="checkbox" data-setting="registration_enabled"><span><strong>Registrierung erlaubt</strong><em>Aus = keine neuen Konten über das Formular.</em></span></label>
+              <label class="admin-switch"><input type="checkbox" data-setting="chat_enabled"><span><strong>Nachrichten erlaubt</strong><em>Aus = keine neuen Direktnachrichten.</em></span></label>
+              <label class="admin-switch"><input type="checkbox" data-setting="friends_enabled"><span><strong>Freundschaften erlaubt</strong><em>Aus = keine neuen Freundschaftsanfragen.</em></span></label>
+              <label class="admin-switch"><input type="checkbox" data-setting="uploads_enabled"><span><strong>Uploads erlaubt</strong><em>Aus = keine neuen Medien in Beiträgen.</em></span></label>
+              <label class="admin-field admin-field--inline"><span>Max. Upload-Größe (MB)</span><input type="number" min="1" max="500" step="1" data-setting="max_upload_mb"></label>
+            </div>
+
+            <div class="admin-card">
+              <h3>Hinweis auf der Website</h3>
+              <label class="admin-switch"><input type="checkbox" data-setting="announcement_active"><span><strong>Hinweis anzeigen</strong><em>Erscheint oben im Mitgliederbereich.</em></span></label>
+              <label class="admin-field"><span>Titel</span><input type="text" maxlength="120" data-setting="announcement_title" placeholder="z. B. Neue Session am Samstag"></label>
+              <label class="admin-field"><span>Text</span><textarea rows="3" maxlength="600" data-setting="announcement_text" placeholder="Kurzer Hinweis für die Community"></textarea></label>
+              <label class="admin-field"><span>Art</span>
+                <select data-setting="announcement_kind">
+                  <option value="info">Information</option>
+                  <option value="success">Gut zu wissen</option>
+                  <option value="warning">Warnung</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="admin-card">
+              <h3>Wartung &amp; Kontakt</h3>
+              <label class="admin-switch"><input type="checkbox" data-setting="maintenance_mode"><span><strong>Wartungsmodus</strong><em>Mitglieder sehen nur den Wartungstext.</em></span></label>
+              <label class="admin-field"><span>Wartungstext</span><textarea rows="2" maxlength="400" data-setting="maintenance_message" placeholder="Wir sind gleich zurück …"></textarea></label>
+              <label class="admin-field"><span>Support-E-Mail</span><input type="email" maxlength="120" data-setting="support_email" placeholder="leibuseele@gmail.com"></label>
+              <label class="admin-field"><span>Link zu den Community-Regeln</span><input type="text" maxlength="200" data-setting="community_rules_url" placeholder="#club-rules"></label>
+            </div>
+
+            <div class="admin-settings__footer">
+              <span class="admin-form-status" id="admin-settings-status" role="status" aria-live="polite"></span>
+              <button class="admin-button admin-button--gold" type="submit">Einstellungen speichern</button>
+            </div>
+          </form>
+          <div class="admin-card admin-card--danger">
+            <h3>Gefahrenzone</h3>
+            <p class="admin-muted">Diese Aktionen lassen sich nicht rückgängig machen. Sie werden im Protokoll festgehalten.</p>
+            <div class="admin-actions-row">
+              <button class="admin-button admin-button--ghost" type="button" id="admin-clear-announcement">Hinweis entfernen</button>
+              <button class="admin-button admin-button--ghost" type="button" id="admin-disable-maintenance">Wartungsmodus beenden</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Protokoll -->
+        <section class="admin-panel" data-admin-panel="audit" aria-labelledby="admin-title-audit" hidden>
+          <div class="admin-panel__head">
+            <div><p class="eyebrow">Nachvollziehbar</p><h2 class="script" id="admin-title-audit"><span class="ini">P</span>rotokoll</h2></div>
+            <span class="admin-muted" id="admin-audit-count"></span>
+          </div>
+          <div class="admin-list" id="admin-audit-list" aria-live="polite"></div>
+          <div class="admin-pager" data-pager="audit"></div>
+        </section>
+
+        <noscript><p class="admin-note">Für den Admin-Bereich muss JavaScript aktiviert sein.</p></noscript>
+      </div>
+    </div>
+
+    <!-- Detail-Dialog -->
+    <dialog class="admin-dialog" id="admin-dialog" aria-labelledby="admin-dialog-title">
+      <div class="admin-dialog__head">
+        <h2 class="script" id="admin-dialog-title">Details</h2>
+        <button class="admin-icon-button" type="button" id="admin-dialog-close" aria-label="Schließen">×</button>
+      </div>
+      <div class="admin-dialog__body" id="admin-dialog-body"></div>
+      <div class="admin-dialog__foot" id="admin-dialog-foot"></div>
+    </dialog>
+
+    <div class="admin-toast" id="admin-toast" role="status" aria-live="polite" hidden></div>
+  </main>
+
+  <script src="assets/js/member-config.js" defer></script>
+  <script src="assets/js/admin.js" defer></script>
+</body>
+</html>

@@ -12,7 +12,7 @@
   if (!community) return;
 
   var config = window.MEMBER_CONFIG || {};
-  var supabaseUrl = String(config.supabaseUrl || '').trim();
+  var supabaseUrl = normalizeSupabaseUrl(config.supabaseUrl);
   var publicKey = String(config.supabasePublicKey || config.anonKey || '').trim();
   var client = null;
   var clientPromise = null;
@@ -38,6 +38,7 @@
   var signedUrlCache = new Map();
   var authMode = 'login';
   var staticEventsBound = false;
+  var siteSettings = null;
 
   var authPanel = $('#member-auth-panel');
   var dashboard = $('#member-dashboard');
@@ -116,6 +117,10 @@
   }
 
   function friendlyError(error) {
+    var raw = error && error.message ? String(error.message) : '';
+    if (/row-level security/i.test(raw) && community.classList.contains('is-banned')) {
+      return 'Dein Konto ist gesperrt – diese Aktion ist deshalb nicht möglich.';
+    }
     var message = error && error.message ? String(error.message) : '';
     var lower = message.toLowerCase();
     if (lower.indexOf('invalid login credentials') !== -1 || lower.indexOf('invalid credentials') !== -1) return 'E-Mail-Adresse oder Passwort stimmen nicht.';
@@ -143,8 +148,113 @@
     } catch (error) { return false; }
   }
 
+
+  function normalizeSupabaseUrl(value) {
+    var url = String(value || '').trim().replace(/\/+$/, '');
+    return url.replace(/\/(rest|auth|storage|realtime)\/v1$/i, '');
+  }
+
   function configIsReady() {
     return /^https?:\/\//i.test(supabaseUrl) && publicKey.length > 12 && publicKey.indexOf('YOUR_') !== 0 && !keyLooksPrivileged(publicKey);
+  }
+
+  function settingOn(key, fallback) {
+    if (!siteSettings || !(key in siteSettings)) return fallback;
+    return siteSettings[key] === true;
+  }
+
+  async function loadSiteSettings() {
+    if (!client) return;
+    var result = await client.rpc('get_public_settings');
+    // Ohne Admin-Migration bleibt alles beim bisherigen Verhalten.
+    if (result.error) return;
+    siteSettings = result.data || {};
+    applySiteSettings();
+  }
+
+  function ensureMemberNotice(id, extraClass, kind) {
+    var node = $('#' + id);
+    if (!node) {
+      node = document.createElement('div');
+      node.id = id;
+      node.setAttribute('role', 'status');
+      node.className = 'member-flash member-notice-dynamic' + (extraClass ? ' ' + extraClass : '');
+      if (globalStatus && globalStatus.parentNode) globalStatus.parentNode.insertBefore(node, globalStatus);
+      else community.insertBefore(node, community.firstChild);
+    }
+    if (kind) node.dataset.kind = kind; else delete node.dataset.kind;
+    return node;
+  }
+
+  function dropMemberNotice(id) {
+    var node = $('#' + id);
+    if (node) node.remove();
+  }
+
+  function applySiteSettings() {
+    if (!siteSettings) return;
+
+    // Hinweis-Banner
+    var showAnnouncement = settingOn('announcement_active', false);
+    var title = String(siteSettings.announcement_title || '').trim();
+    var text = String(siteSettings.announcement_text || '').trim();
+    if (showAnnouncement && (title || text)) {
+      var kind = siteSettings.announcement_kind === 'warning' ? 'error'
+        : siteSettings.announcement_kind === 'success' ? 'success' : '';
+      var node = ensureMemberNotice('member-announcement', 'member-announcement', kind);
+      node.replaceChildren();
+      if (title) node.appendChild(make('strong', null, title));
+      if (text) node.appendChild(make('span', null, text));
+    } else {
+      dropMemberNotice('member-announcement');
+    }
+
+    // Wartungsmodus
+    var maintenance = settingOn('maintenance_mode', false);
+    community.classList.toggle('is-maintenance', maintenance);
+    if (maintenance) {
+      var maintenanceNode = ensureMemberNotice('member-maintenance', 'member-maintenance', 'error');
+      maintenanceNode.replaceChildren();
+      maintenanceNode.appendChild(make('strong', null, 'Wartungsarbeiten'));
+      maintenanceNode.appendChild(make('span', null, String(siteSettings.maintenance_message || 'Der Mitgliederbereich ist gerade kurz nicht erreichbar. Bitte später noch einmal vorbeischauen.')));
+    } else {
+      dropMemberNotice('member-maintenance');
+    }
+
+    // Anmeldung / Registrierung
+    var areaOpen = settingOn('member_area_open', true);
+    community.classList.toggle('is-closed', !areaOpen);
+    if (!areaOpen) {
+      var closedNode = ensureMemberNotice('member-closed', 'member-maintenance', 'error');
+      closedNode.replaceChildren();
+      closedNode.appendChild(make('strong', null, 'Anmeldung derzeit geschlossen'));
+      closedNode.appendChild(make('span', null, 'Neue Anmeldungen und Registrierungen sind vorübergehend nicht möglich.'));
+    } else {
+      dropMemberNotice('member-closed');
+    }
+
+    var registrationOpen = settingOn('registration_enabled', true);
+    community.classList.toggle('no-registration', !registrationOpen);
+    toggleFeature('[data-auth-mode="register"]', registrationOpen);
+    if (!registrationOpen && authMode === 'register') setAuthMode('login');
+
+    // Funktionen ausblenden
+    toggleFeature('[data-member-tab="messages"]', settingOn('chat_enabled', true));
+    toggleFeature('[data-member-tab="friends"]', settingOn('friends_enabled', true));
+    var uploads = settingOn('uploads_enabled', true);
+    toggleFeature('[data-post-kind="image"]', uploads);
+    toggleFeature('[data-post-kind="video"]', uploads);
+    toggleFeature('[data-post-kind="voice"]', uploads);
+    if (!uploads && postKind !== 'text') setPostKind('text');
+    toggleFeature('#member-message-form', settingOn('chat_enabled', true));
+    toggleFeature('#member-search-form', settingOn('friends_enabled', true));
+  }
+
+  function toggleFeature(selector, enabled) {
+    $$(selector).forEach(function (node) {
+      node.hidden = !enabled;
+      node.setAttribute('aria-hidden', enabled ? 'false' : 'true');
+    });
   }
 
   function setAuthControlsEnabled(enabled) {
@@ -238,6 +348,7 @@
         // Defer network calls outside the auth callback; the SDK shares its auth lock.
         window.setTimeout(function () { applySession(session, event); }, 0);
       });
+      loadSiteSettings();
       return client.auth.getSession();
     }).then(function (result) {
       if (result.error) throw result.error;
@@ -312,6 +423,37 @@
     if (result.error) throw result.error;
     currentProfile = result.data || null;
     if (currentProfile && currentProfile.avatar_path) await signPaths('avatars', [currentProfile.avatar_path]);
+    await applyAdminLink();
+    await applyBanState();
+  }
+
+  async function applyAdminLink() {
+    var link = $('#member-admin-link');
+    if (!link) return;
+    if (!client || !currentUser) { link.hidden = true; return; }
+    try {
+      var result = await client.rpc('is_admin');
+      link.hidden = !(result.data === true);
+    } catch (error) {
+      link.hidden = true;
+    }
+  }
+
+  async function applyBanState() {
+    if (!client || !currentUser) return;
+    var banned = false;
+    try {
+      var result = await client.rpc('is_member_banned', { p_user_id: currentUser.id });
+      banned = result.data === true;
+    } catch (error) {
+      banned = false;
+    }
+    community.classList.toggle('is-banned', banned);
+    if (!banned) { dropMemberNotice('member-banned'); return; }
+    var node = ensureMemberNotice('member-banned', 'member-maintenance', 'error');
+    node.replaceChildren();
+    node.appendChild(make('strong', null, 'Dein Konto ist gesperrt'));
+    node.appendChild(make('span', null, 'Du kannst derzeit keine Beiträge, Kommentare, Nachrichten oder Uploads erstellen. Bei Fragen wende dich an ' + (siteSettings && siteSettings.support_email || 'den Betreiber') + '.'));
   }
 
   function getSignedUrl(bucket, path) {
