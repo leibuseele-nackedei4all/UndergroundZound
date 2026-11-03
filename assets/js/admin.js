@@ -192,6 +192,16 @@
     return result.data;
   }
 
+  function cleanAuthParams() {
+    try {
+      var url = new URL(window.location.href);
+      ['code', 'error', 'error_code', 'error_description', 'state', 'sb_flow_id'].forEach(function (key) {
+        url.searchParams.delete(key);
+      });
+      window.history.replaceState(window.history.state, '', url.toString());
+    } catch (error) { /* egal */ }
+  }
+
   function setGateEnabled(enabled) {
     $$('#admin-login-form input, #admin-login-form button').forEach(function (node) { node.disabled = !enabled; });
   }
@@ -242,8 +252,22 @@
     if (message) flash(message, kind || 'error');
   }
 
+  function oauthErrorMessage(params) {
+    var code = String(params.get('error') || params.get('error_code') || '').toLowerCase();
+    var description = params.get('error_description') || '';
+    if (code === 'access_denied' || /denied|abgebrochen|cancell?ed/i.test(description)) {
+      return 'Die Anmeldung wurde abgebrochen. Du kannst es jederzeit erneut versuchen.';
+    }
+    if (/code verifier|code_verifier/i.test(description)) {
+      return 'Der Anmelde-Link ist abgelaufen oder wurde in einem anderen Browser geöffnet. Bitte melde dich erneut an.';
+    }
+    if (description) return 'Anmeldung nicht abgeschlossen: ' + description;
+    return 'Die Anmeldung konnte nicht abgeschlossen werden. Bitte versuche es erneut.';
+  }
+
   async function handleAuth(event, nextSession) {
     if (event === 'PASSWORD_RECOVERY') {
+      cleanAuthParams();
       showRecoveryDialog();
       return;
     }
@@ -1861,5 +1885,15 @@
 
   bindEvents();
   if (window.location.hash === '#club') window.location.hash = '';
+  (function announceCallbackProblem() {
+    var params;
+    try { params = new URLSearchParams(window.location.search); } catch (error) { return; }
+    if (params.has('error') || params.has('error_description')) {
+      flash(oauthErrorMessage(params), 'error');
+      cleanAuthParams();
+    } else if (params.has('code')) {
+      flash('Anmeldung wird abgeschlossen …');
+    }
+  })();
   boot();
 })();

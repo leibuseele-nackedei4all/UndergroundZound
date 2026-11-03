@@ -117,6 +117,60 @@ Konsole unter *Mitglieder → „Zum Admin“* vergeben.
 - Passwörter werden nie im Klartext gespeichert; „Passwort vergessen?“ auf der
   Anmeldeseite verschickt einen Supabase-Reset-Link zurück auf `admin.html`.
 
+## Google- und Facebook-Anmeldung: Redirect-Kette prüfen
+
+Der Login läuft als **PKCE-Flow** über Supabase. Die Kette muss in jedem Glied
+exakt passen, sonst landet man nach dem Google-Dialog wieder auf der Startseite
+oder in einem „invalid request“:
+
+```
+Website  --signInWithOAuth-->  https://<projekt>.supabase.co/auth/v1/authorize?provider=google
+         --Weiterleitung-->    accounts.google.com
+         --Rücksprung-->       https://<projekt>.supabase.co/auth/v1/callback?code=…&state=…
+         --Weiterleitung-->    https://leibuseele-nackedei4all.github.io/UndergroundZound/?code=…#club
+                               (wird im Browser gegen /auth/v1/token?grant_type=pkce getauscht)
+```
+
+**Wichtig:** Der Code kommt als **Query-Parameter** (`?code=…`) an, das `#club`
+steht dahinter. Der Client wertet beides aus, öffnet den Mitgliederbereich und
+entfernt den Code danach aus der Adresszeile (`community.js` →
+`readAuthCallback()` / `focusMemberArea()`). Fehler wie `?error=access_denied`
+werden als verständliche Meldung angezeigt.
+
+### Checkliste in Supabase
+
+1. **Authentication → URL Configuration**
+   - *Site URL:* `https://leibuseele-nackedei4all.github.io/UndergroundZound/`
+   - *Redirect URLs* (jede Zeile einzeln, mit `**`-Platzhalter am Ende):
+     - `https://leibuseele-nackedei4all.github.io/UndergroundZound/**`
+     - `http://localhost:8080/**` (lokale Vorschau)
+     - die Preview-Domain der Sandbox, z. B. `https://8080-<sandbox-id>.e2b.app/**`
+2. **Authentication → Providers → Google:** Client-ID und Secret aus der
+   Google Cloud Console eintragen und dort als *Authorized redirect URI* **genau**
+   `https://<projekt>.supabase.co/auth/v1/callback` hinterlegen (nicht die Website!).
+3. **Google Cloud Console → OAuth-Zustimmungsbildschirm:** Autorisiere
+   JavaScript-Ursprünge `https://<projekt>.supabase.co` und
+   `https://leibuseele-nackedei4all.github.io`.
+4. **Für die Sandbox/Preview:** Die Preview läuft auf einer eigenen Domain. Diese
+   muss in Supabase unter *Redirect URLs* stehen, sonst schickt Supabase nach dem
+   Login auf die *Site URL* (GitHub Pages) statt zurück in die Vorschau.
+5. **Passwort vergessen / E-Mail-Bestätigung:** Der Link führt ebenfalls über
+   `/auth/v1/verify` zurück auf `?code=…`; `admin.html` öffnet dann automatisch
+   den Dialog „Neues Passwort“.
+
+### Bekannte Stolperfallen
+
+| Symptom | Ursache / Lösung |
+|---|---|
+| Nach Google-Login landet man auf `#home` und ist nicht angemeldet | Redirect-URL fehlt in Supabase (Punkt 1) oder der Code wurde nicht ausgewertet (behoben in `community.js`) |
+| `invalid request: both auth code and code verifier should be non-empty` | Rücksprung in anderem Browser/Tab geöffnet oder Link abgelaufen – Anmeldung dort neu starten, wo sie begonnen wurde |
+| `provider is not enabled` | Google ist in Supabase noch nicht aktiviert oder Secret fehlt |
+| „Anmeldung braucht eine sichere Verbindung“ | `crypto.subtle` gibt es nur unter `https://` oder `http://localhost` |
+| Endlos-Weiterleitung zwischen Google und Supabase | In Google ist die Callback-URL falsch (`/auth/v1/callback`, nicht die Website) |
+
+Test ohne Google-Konto: `node tools/oauth-redirect-test.js` (jsdom, simuliert
+Rücksprung, Abbruch, Reset-Link und prüft die erzeugte `authorize`-URL).
+
 ## Edit the site
 
 Everything can be edited directly on GitHub (open a file → pencil icon) or with any text editor.

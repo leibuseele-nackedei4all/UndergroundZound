@@ -39,6 +39,9 @@
   var authMode = 'login';
   var staticEventsBound = false;
   var siteSettings = null;
+  var pendingCallback = null;
+  var callbackOutcomeError = null;
+  var callbackOutcomeTimer = null;
 
   var authPanel = $('#member-auth-panel');
   var dashboard = $('#member-dashboard');
@@ -129,12 +132,104 @@
     if (lower.indexOf('password should be at least') !== -1 || lower.indexOf('weak password') !== -1) return 'Bitte verwende ein längeres Passwort.';
     if (lower.indexOf('duplicate key') !== -1 || lower.indexOf('profiles_username_key') !== -1) return 'Dieser Benutzername ist bereits vergeben.';
     if (lower.indexOf('row-level security') !== -1 || lower.indexOf('permission denied') !== -1) return 'Der Zugriff wurde von der Datenbank abgelehnt. Prüfe die Supabase-Migration und RLS-Regeln.';
+    if (lower.indexOf('code verifier') !== -1 || lower.indexOf('both auth code and code verifier') !== -1) return 'Der Rücksprung der Anmeldung ist abgelaufen oder wurde in einem anderen Browser geöffnet. Bitte starte die Anmeldung hier erneut.';
+    if (lower.indexOf('provider is not enabled') !== -1 || lower.indexOf('unsupported provider') !== -1) return 'Dieser Anmeldeanbieter ist in Supabase noch nicht aktiviert.';
     if (lower.indexOf('failed to fetch') !== -1 || lower.indexOf('network') !== -1) return 'Der Server ist gerade nicht erreichbar. Prüfe die Verbindung und deine Supabase-Einstellungen.';
     return message || 'Das hat leider nicht geklappt. Bitte versuche es erneut.';
   }
 
   function callbackUrl() {
     return window.location.origin + window.location.pathname + '#club';
+  }
+
+  /*
+   * Rücksprung von Google/Facebook (und von Bestätigungs-/Reset-Links).
+   * Supabase hängt ?code=… (PKCE) an die redirect_to-URL. Wenn zusätzlich ein
+   * Fragment wie #club mitkommt, steht der Code im Query-String VOR dem #.
+   * Beides muss erkannt werden, sonst initialisiert der Client nie.
+   */
+  function readAuthCallback() {
+    var search = window.location.search ? new URLSearchParams(window.location.search) : null;
+    var rawHash = window.location.hash.slice(1);
+    var hashParams = rawHash && rawHash.indexOf('=') !== -1 ? new URLSearchParams(rawHash) : null;
+    function pick(key) {
+      if (search && search.has(key)) return search.get(key);
+      if (hashParams && hashParams.has(key)) return hashParams.get(key);
+      return null;
+    }
+    var callback = {
+      code: pick('code'),
+      error: pick('error') || pick('error_code'),
+      description: pick('error_description'),
+      type: pick('type') || '',
+      token: pick('access_token')
+    };
+    if (!callback.code && !callback.error && !callback.description && !callback.token) return null;
+    return callback;
+  }
+
+  function oauthErrorMessage(callback) {
+    var code = String(callback && callback.error || '').toLowerCase();
+    var description = callback && callback.description ? String(callback.description) : '';
+    if (code === 'access_denied' || /denied|abgebrochen|cancell?ed/i.test(description)) {
+      return 'Die Anmeldung über Google oder Facebook wurde abgebrochen. Du kannst es jederzeit erneut versuchen.';
+    }
+    if (/code verifier|code_verifier|both auth code and code verifier/i.test(description)) {
+      return 'Die Anmeldung konnte nicht abgeschlossen werden: Der Rücksprung wurde in einem anderen Browser oder Tab geöffnet, oder der Link ist abgelaufen. Bitte starte die Google-Anmeldung hier neu.';
+    }
+    if (/provider is not enabled|unsupported provider/i.test(description)) {
+      return 'Dieser Anbieter ist in Supabase noch nicht aktiviert. Prüfe Supabase → Authentication → Providers sowie die erlaubten Redirect-URLs.';
+    }
+    if (code === 'invalid_request' || /state|bad_oauth_state/i.test(description)) {
+      return 'Der Rücksprung von Google war ungültig (Sitzung abgelaufen). Bitte starte die Anmeldung erneut.';
+    }
+    if (description) return 'Anmeldung nicht abgeschlossen: ' + description;
+    return 'Die Anmeldung über Google oder Facebook konnte nicht abgeschlossen werden. Bitte versuche es erneut.';
+  }
+
+  // Hängt die Mitglieder-Ansicht ans Fragment, ohne den Query-String (Code!) zu verlieren.
+  function focusMemberArea() {
+    if (window.location.hash.slice(1) === 'club') return;
+    var target = window.location.pathname + (window.location.search || '') + '#club';
+    try {
+      window.history.replaceState(window.history.state, '', target);
+      window.dispatchEvent(new window.Event('hashchange'));
+    } catch (error) {
+      window.location.hash = 'club';
+    }
+  }
+
+  function clearAuthParams() {
+    try {
+      var url = new URL(window.location.href);
+      ['code', 'error', 'error_code', 'error_description', 'state', 'sb_flow_id'].forEach(function (key) {
+        url.searchParams.delete(key);
+      });
+      window.history.replaceState(window.history.state, '', url.toString());
+    } catch (error) { /* egal */ }
+  }
+
+  function providerName(provider) {
+    return provider === 'facebook' ? 'Facebook' : provider === 'google' ? 'Google' : String(provider || 'Anbieter');
+  }
+
+  function providerLabel() {
+    try {
+      var stored = window.sessionStorage && window.sessionStorage.getItem('ls-oauth-provider');
+      return stored === 'facebook' ? 'Facebook' : stored === 'google' ? 'Google' : 'deinen Anbieter';
+    } catch (error) { return 'deinen Anbieter'; }
+  }
+
+  function handleCallbackOutcome() {
+    if (!pendingCallback) return;
+    var failed = !currentUser;
+    pendingCallback = null;
+    clearAuthParams();
+    if (failed) {
+      showGlobal(oauthErrorMessage(callbackOutcomeError), 'error');
+    } else if (callbackOutcomeError && callbackOutcomeError.code) {
+      showGlobal('Angemeldet.', 'success');
+    }
   }
 
   function keyLooksPrivileged(key) {
@@ -331,7 +426,8 @@
   }
 
   function boot() {
-    if (client || clientPromise || window.location.hash.slice(1) !== 'club') return;
+    if (client || clientPromise) return;
+    if (window.location.hash.slice(1) !== 'club' && !pendingCallback) return;
     if (!configIsReady()) {
       if (setupNote) setupNote.hidden = false;
       setAuthControlsEnabled(false);
@@ -353,8 +449,20 @@
     }).then(function (result) {
       if (result.error) throw result.error;
       return applySession(result.data.session, 'INITIAL_SESSION');
+    }).then(function () {
+      if (!pendingCallback) return;
+      // Nach dem Rücksprung auf das SDK-Ergebnis warten, dann URL aufräumen.
+      window.clearTimeout(callbackOutcomeTimer);
+      callbackOutcomeTimer = window.setTimeout(handleCallbackOutcome, 900);
     }).catch(function (error) {
       clientPromise = null;
+      if (pendingCallback) {
+        callbackOutcomeError = { error: error && error.code, description: (error && error.message) || '' };
+        showGlobal(oauthErrorMessage(callbackOutcomeError), 'error');
+        clearAuthParams();
+        pendingCallback = null;
+        return;
+      }
       showGlobal(friendlyError(error), 'error');
     });
   }
@@ -402,6 +510,15 @@
       $('#member-password-update-form').hidden = true;
       authPanel.hidden = true;
       dashboard.hidden = false;
+      if (pendingCallback) {
+        window.clearTimeout(callbackOutcomeTimer);
+        window.setTimeout(function () {
+          pendingCallback = null;
+          callbackOutcomeError = null;
+          clearAuthParams();
+          showGlobal('Willkommen zurück – Anmeldung über ' + providerLabel() + ' abgeschlossen.', 'success');
+        }, 800);
+      }
       $('#member-sidebar-name').textContent = currentProfile.display_name || 'Mitglied';
       $('#member-sidebar-handle').textContent = '@' + (currentProfile.username || 'mitglied');
       $('#member-welcome').textContent = 'Willkommen, ' + (currentProfile.display_name || 'Mitglied');
@@ -1559,8 +1676,21 @@
       button.addEventListener('click', async function () {
         if (!client) { showGlobal('Der Mitgliederbereich ist noch nicht mit Supabase verbunden.', 'error'); return; }
         if (!$('#member-social-consent').checked) { showGlobal('Bitte bestätige zuerst die Community-Regeln und Datenschutzhinweise.', 'error'); $('#member-social-consent').focus(); return; }
-        var result = await client.auth.signInWithOAuth({ provider: button.dataset.oauthProvider, options: { redirectTo: callbackUrl() } });
-        if (result.error) showGlobal(friendlyError(result.error), 'error');
+        try {
+          window.sessionStorage.setItem('ls-oauth-provider', button.dataset.oauthProvider);
+        } catch (error) { /* privater Modus */ }
+        button.disabled = true;
+        showGlobal('Weiterleitung zu ' + providerName(button.dataset.oauthProvider) + ' …');
+        try {
+          var result = await client.auth.signInWithOAuth({ provider: button.dataset.oauthProvider, options: { redirectTo: callbackUrl() } });
+          if (result.error) showGlobal(friendlyError(result.error), 'error');
+        } catch (error) {
+          // z. B. fehlendes crypto.subtle auf einer unsicheren Herkunft (http://…)
+          showGlobal(window.isSecureContext === false || !(window.crypto && window.crypto.subtle)
+            ? 'Die Anmeldung braucht eine sichere Verbindung (https://). Bitte öffne die Seite über https und versuche es erneut.'
+            : friendlyError(error), 'error');
+        }
+        button.disabled = false;
       });
     });
 
@@ -1596,6 +1726,21 @@
   setAuthMode('login');
   setPostKind('text');
   updateHeader();
-  window.addEventListener('hashchange', function () { if (window.location.hash.slice(1) === 'club') boot(); });
-  if (window.location.hash.slice(1) === 'club') boot();
+
+  pendingCallback = readAuthCallback();
+  window.addEventListener('hashchange', function () {
+    if (!pendingCallback && window.location.hash.slice(1) === 'club') boot();
+  });
+  if (pendingCallback || window.location.hash.slice(1) === 'club') {
+    if (pendingCallback) {
+      focusMemberArea();
+      if (pendingCallback.error || pendingCallback.description) {
+        callbackOutcomeError = pendingCallback;
+        showGlobal(oauthErrorMessage(pendingCallback), 'error');
+      } else {
+        showGlobal('Anmeldung wird abgeschlossen …');
+      }
+    }
+    boot();
+  }
 })();
