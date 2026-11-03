@@ -60,7 +60,7 @@ function check(label, condition, detail) {
   console.log(`${condition ? '✓' : '✗'} ${label}${detail && !condition ? ' → ' + detail : ''}`);
 }
 
-async function openPage(url, storage, page = 'index.html') {
+async function openPage(url, storage, page = 'index.html', captureNav = false) {
   const log = [];
   const html = fs.readFileSync(path.join(root, page), 'utf8');
   const virtualConsole = new VirtualConsole();
@@ -96,7 +96,14 @@ async function openPage(url, storage, page = 'index.html') {
     const realSignIn = instance.auth.signInWithOAuth.bind(instance.auth);
     instance.auth.signInWithOAuth = (options) => {
       window.__oauthCalls.push(options || {});
-      return Promise.resolve({ data: { provider: options.provider, url: 'stub://authorize' }, error: null });
+      if (window.__oauthFailWith) {
+        return Promise.resolve({ data: { provider: options.provider, url: null }, error: window.__oauthFailWith });
+      }
+      // echte URL der Bibliothek erzeugen (ohne Navigation)
+      const probe = window.__origCreateClient('https://demo.supabase.co', 'sb_publishable_demo_1234567890123', {
+        auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true, flowType: 'pkce' }
+      });
+      return probe.auth.signInWithOAuth(Object.assign({}, options, { options: Object.assign({}, options.options, { skipBrowserRedirect: true }) }));
     };
     return instance;
   };
@@ -105,6 +112,10 @@ async function openPage(url, storage, page = 'index.html') {
     window.eval(fs.readFileSync(path.join(root, 'assets/js/community.js'), 'utf8'));
   } else {
     window.eval(fs.readFileSync(path.join(root, 'assets/js/admin.js'), 'utf8'));
+  }
+  if (captureNav) {
+    // jsdom kann nicht navigieren: location.assign abfangen und protokollieren.
+    window.location.assign = (next) => { window.__assign.push(String(next)); };
   }
   // echte Navigation abfangen (jsdom navigiert sonst nicht) – nach dem Setup,
   // damit window.location beim Laden unverändert bleibt.
@@ -153,7 +164,7 @@ function activeView(doc) {
 
   // ---------- 4) Google-Start: wohin wird geleitet? ----------
   {
-    const { window, doc } = await openPage('https://site.test/UndergroundZound/#club');
+    const { window, doc } = await openPage('https://site.test/UndergroundZound/#club', null, 'index.html', true);
     const google = doc.querySelector('[data-oauth-provider="google"]');
     const consent = doc.querySelector('#member-social-consent');
 
@@ -165,35 +176,49 @@ function activeView(doc) {
 
     consent.checked = true;
     google.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
-    await wait(400);
+    await wait(500);
+
     const call = window.__oauthCalls[0];
     check('Google-Klick startet die Anmeldung', !!call);
     check('Anbieter ist google', !!call && call.provider === 'google', call && call.provider);
     check('redirect_to ist die aktuelle Seite', !!call && call.options.redirectTo === 'https://site.test/UndergroundZound/#club',
       call && call.options.redirectTo);
-    check('Während der Weiterleitung erscheint ein Status', /Weiterleitung zu Google/i.test(doc.querySelector('#member-global-status').textContent),
-      doc.querySelector('#member-global-status').textContent);
+    check('Navigation wird selbst ausgelöst (skipBrowserRedirect)', !!call && call.options.skipBrowserRedirect === true);
 
-    // Echte URL-Bildung der Bibliothek prüfen (ohne Navigation)
-    const probe = window.__origCreateClient('https://demo.supabase.co', 'sb_publishable_demo_1234567890123', {
+    // Die URL, die supabase-js erzeugt, durch unsere Härtung schicken –
+    // genauso läuft es im Browser vor dem location.assign().
+    const probeClient = window.__origCreateClient('https://demo.supabase.co', 'sb_publishable_demo_1234567890123', {
       auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true, flowType: 'pkce' }
     });
-    const built = await probe.auth.signInWithOAuth({
+    const built = await probeClient.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: 'https://site.test/UndergroundZound/#club', skipBrowserRedirect: true }
     });
-    const url = built.data.url || '';
-    check('Weiterleitung geht an Supabase /auth/v1/authorize mit provider=google',
-      /^https:\/\/demo\.supabase\.co\/auth\/v1\/authorize\?provider=google/.test(url), url);
-    // jsdom besitzt kein crypto.subtle, deshalb fällt das SDK dort auf `plain` zurück.
-    // In echten Browsern (https/localhost) ist es S256 – beides wird akzeptiert.
-    const method = (url.match(/code_challenge_method=(\w+)/i) || [])[1];
-    check('PKCE-Challenge wird mitgeschickt', /code_challenge=[^&]+/.test(url) && /^(S256|plain)$/i.test(method || ''), url);
-    console.log('  (Challenge-Methode in dieser Testumgebung: ' + method + ')');
-    check('redirect_to zeigt auf die eigene Website', new URL(url).searchParams.get('redirect_to') === 'https://site.test/UndergroundZound/#club',
-      new URL(url).searchParams.get('redirect_to'));
-    check('Code-Verifier liegt danach im Speicher', Object.keys(window.localStorage).some((k) => k.includes('code-verifier')),
+    const target = window.LS.auth.authorizeUrl(built.data.url);
+    check('Es wird zu Supabase /auth/v1/authorize navigiert', /^https:\/\/demo\.supabase\.co\/auth\/v1\/authorize\?/.test(target), target);
+    check('provider=google ist gesetzt', /[?&]provider=google/.test(target), target);
+    check('apikey wird mitgeschickt (behebt „No API key found in request“)',
+      /[?&]apikey=sb_publishable_demo_1234567890123/.test(target), target);
+    const params = new URL(target).searchParams;
+    check('PKCE-Challenge wird mitgeschickt', !!params.get('code_challenge') && /^(S256|plain)$/i.test(params.get('code_challenge_method') || ''), target);
+    check('redirect_to zeigt auf die eigene Website', params.get('redirect_to') === 'https://site.test/UndergroundZound/#club', params.get('redirect_to'));
+    check('Kein doppelter Pfad in der Ziel-URL', !/v1\/v1\//.test(target), target);
+    check('Code-Verifier liegt im Speicher', Object.keys(window.localStorage).some((k) => k.includes('code-verifier')),
       Object.keys(window.localStorage).join(', '));
+  }
+
+  // ---------- 4b) Fehler beim Start werden erklärt ----------
+  {
+    const { window, doc } = await openPage('https://site.test/UndergroundZound/#club', null, 'index.html', true);
+    window.__oauthFailWith = { message: 'No API key found in request' };
+    doc.querySelector('#member-social-consent').checked = true;
+    doc.querySelector('[data-oauth-provider="google"]').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+    await wait(400);
+    check('„No API key found“ wird verständlich erklärt',
+      /API-Key|Providers|pausiert/i.test(doc.querySelector('#member-global-status').textContent),
+      doc.querySelector('#member-global-status').textContent);
+    check('Nach dem Fehler ist der Button wieder nutzbar',
+      doc.querySelector('[data-oauth-provider="google"]').disabled === false);
   }
 
   // ---------- 5) Abgelaufener/fehlender Verifier (anderer Browser, alter Link) ----------

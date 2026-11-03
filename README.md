@@ -137,10 +137,45 @@ entfernt den Code danach aus der Adresszeile (`community.js` →
 `readAuthCallback()` / `focusMemberArea()`). Fehler wie `?error=access_denied`
 werden als verständliche Meldung angezeigt.
 
+### Fehler `{"message":"No API key found in request"}`
+
+Diese Meldung kommt **nicht** von Google, sondern vom Supabase-Gateway (Kong):
+Es wurde eine Supabase-Adresse aufgerufen, an der der `apikey` fehlt. Zwei
+Ursachen sind typisch ([Supabase-Diskussion #16241](https://github.com/orgs/supabase/discussions/16241)):
+
+1. **Weiterleitung ohne `apikey` (im Client behoben).** supabase-js baut
+   `/auth/v1/authorize?provider=google&redirect_to=…` **ohne** `apikey`-Parameter.
+   `community.js` setzt ihn jetzt selbst hinzu (`buildAuthorizeUrl()`), bevor
+   `location.assign()` aufgerufen wird – die gestartete URL sieht so aus:
+
+   ```
+   https://<projekt>.supabase.co/auth/v1/authorize?provider=google
+     &redirect_to=https%3A%2F%2Fleibuseele-nackedei4all.github.io%2FUndergroundZound%2F%23club
+     &apikey=<publishable key>
+     &code_challenge=…&code_challenge_method=S256
+   ```
+
+2. **Site URL ohne Protokoll.** Steht unter *Authentication → URL Configuration*
+   bei **Site URL** nur `leibuseele-nackedei4all.github.io/UndergroundZound/`
+   (ohne `https://`), schickt Supabase nach dem Google-Dialog auf eine kaputte
+   Supabase-Adresse – die Antwort ist genau diese JSON-Meldung. **Immer mit
+   `https://` eintragen**, ebenso in den Redirect-URLs.
+
+Prüfen, was der Browser wirklich aufruft: in der Konsole der Website
+
+```js
+LS.auth.authorizeUrl('https://<projekt>.supabase.co/auth/v1/authorize?provider=google')
+```
+
+Diese URL in einem neuen Tab öffnen. Kommt sofort die JSON-Meldung → Ursache 1
+(Client/Key). Erscheint der Google-Dialog und danach die Meldung → Ursache 2
+(Site URL/Redirect-URLs in Supabase).
+
 ### Checkliste in Supabase
 
 1. **Authentication → URL Configuration**
    - *Site URL:* `https://leibuseele-nackedei4all.github.io/UndergroundZound/`
+     (vollständig **mit** `https://` – ohne Protokoll entsteht der „No API key“-Fehler)
    - *Redirect URLs* (jede Zeile einzeln, mit `**`-Platzhalter am Ende):
      - `https://leibuseele-nackedei4all.github.io/UndergroundZound/**`
      - `http://localhost:8080/**` (lokale Vorschau)
@@ -165,6 +200,7 @@ werden als verständliche Meldung angezeigt.
 | Nach Google-Login landet man auf `#home` und ist nicht angemeldet | Redirect-URL fehlt in Supabase (Punkt 1) oder der Code wurde nicht ausgewertet (behoben in `community.js`) |
 | `invalid request: both auth code and code verifier should be non-empty` | Rücksprung in anderem Browser/Tab geöffnet oder Link abgelaufen – Anmeldung dort neu starten, wo sie begonnen wurde |
 | `provider is not enabled` | Google ist in Supabase noch nicht aktiviert oder Secret fehlt |
+| `{"message":"No API key found in request","hint":"No … apikey …"}` | `apikey` fehlte an `/auth/v1/authorize` (im Client behoben) **oder** Site URL ohne `https://` in Supabase |
 | „Anmeldung braucht eine sichere Verbindung“ | `crypto.subtle` gibt es nur unter `https://` oder `http://localhost` |
 | Endlos-Weiterleitung zwischen Google und Supabase | In Google ist die Callback-URL falsch (`/auth/v1/callback`, nicht die Website) |
 

@@ -138,6 +138,42 @@
     return message || 'Das hat leider nicht geklappt. Bitte versuche es erneut.';
   }
 
+  // Supabase-Gateway (Kong) verlangt bei JEDER Anfrage den apikey. supabase-js
+  // hängt ihn an /auth/v1/authorize nicht an; fehlt er, antwortet das Gateway
+  // mit {"message":"No API key found in request"} statt zu Google zu leiten.
+  function buildAuthorizeUrl(rawUrl) {
+    if (!rawUrl) throw new Error('Die Anmelde-URL konnte nicht erzeugt werden.');
+    var url;
+    try { url = new URL(rawUrl, window.location.href); } catch (error) { throw new Error('Die Anmelde-URL ist ungültig.'); }
+    if (/\/(rest|auth|storage|realtime)\/v1\/(auth|storage|realtime)\/v1\//.test(url.pathname)) {
+      throw new Error('Die Projekt-URL in assets/js/member-config.js enthält einen Zusatzpfad. Bitte nur https://<projekt>.supabase.co eintragen.');
+    }
+    if (!url.searchParams.get('apikey')) url.searchParams.set('apikey', publicKey);
+    return url.toString();
+  }
+
+  function navigateTo(url) {
+    window.location.assign(url);
+  }
+
+  function oauthStartError(error) {
+    var message = (error && error.message) || String(error || '');
+    if (/no api key|apikey|api key/i.test(message)) {
+      return 'Supabase hat die Anmelde-Anfrage abgelehnt (API-Key fehlt). Prüfe in Supabase: Authentication → Providers → Google aktiviert, Redirect-URLs eingetragen, Projekt nicht pausiert.';
+    }
+    if (/projekt-url|zusatzpfad/i.test(message)) return message;
+    if (/provider is not enabled|unsupported provider/i.test(message)) {
+      return 'Dieser Anbieter ist in Supabase noch nicht aktiviert (Authentication → Providers).';
+    }
+    if (/redirect/i.test(message)) {
+      return 'Die Rücksprung-Adresse ist in Supabase nicht erlaubt. Trage ' + callbackUrl() + ' unter Authentication → URL Configuration → Redirect URLs ein.';
+    }
+    if (window.isSecureContext === false || !(window.crypto && window.crypto.subtle)) {
+      return 'Die Anmeldung braucht eine sichere Verbindung (https://). Bitte öffne die Seite über https und versuche es erneut.';
+    }
+    return friendlyError(error);
+  }
+
   function callbackUrl() {
     return window.location.origin + window.location.pathname + '#club';
   }
@@ -1682,15 +1718,18 @@
         button.disabled = true;
         showGlobal('Weiterleitung zu ' + providerName(button.dataset.oauthProvider) + ' …');
         try {
-          var result = await client.auth.signInWithOAuth({ provider: button.dataset.oauthProvider, options: { redirectTo: callbackUrl() } });
-          if (result.error) showGlobal(friendlyError(result.error), 'error');
+          // skipBrowserRedirect: wir bauen die URL selbst, damit der apikey
+          // mitgeht und Fehler der Bibliothek sichtbar werden.
+          var result = await client.auth.signInWithOAuth({
+            provider: button.dataset.oauthProvider,
+            options: { redirectTo: callbackUrl(), skipBrowserRedirect: true }
+          });
+          if (result.error) throw result.error;
+          navigateTo(buildAuthorizeUrl(result.data && result.data.url));
         } catch (error) {
-          // z. B. fehlendes crypto.subtle auf einer unsicheren Herkunft (http://…)
-          showGlobal(window.isSecureContext === false || !(window.crypto && window.crypto.subtle)
-            ? 'Die Anmeldung braucht eine sichere Verbindung (https://). Bitte öffne die Seite über https und versuche es erneut.'
-            : friendlyError(error), 'error');
+          showGlobal(oauthStartError(error), 'error');
+          button.disabled = false;
         }
-        button.disabled = false;
       });
     });
 
@@ -1721,6 +1760,14 @@
       if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); $('#member-message-form').requestSubmit(); }
     });
   }
+
+  // Diagnose-Hilfe für die Browser-Konsole und die Tests in tools/:
+  // LS.auth.authorizeUrl('https://<projekt>.supabase.co/auth/v1/authorize?provider=google')
+  window.LS = window.LS || {};
+  window.LS.auth = Object.assign(window.LS.auth || {}, {
+    callbackUrl: callbackUrl,
+    authorizeUrl: function (rawUrl) { return buildAuthorizeUrl(rawUrl); }
+  });
 
   bindEvents();
   setAuthMode('login');
